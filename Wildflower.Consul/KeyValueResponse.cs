@@ -5,30 +5,24 @@ using Wildflower.Consul.WebExtensions;
 
 namespace Wildflower.Consul
 {
-    public class KeyValueResponse : ConsulResponse<KeyValueResource[]>
+    public class KeyValueResponse<TContent>
     {
-        public KeyValueResponse(HttpResponseMessage responseMessage)
-            : base(responseMessage)
-        { }
+        public HttpStatusCode StatusCode { get; private set; }
+        public string ReasonPhrase { get; private set; }
+        public int Index { get; private set; }
+        public bool KnownLeader { get; private set; }
+        public int LastContact { get; private set; }
+        public TContent Content { get; private set; }
 
-        public int Index
+        public KeyValueResponse(HttpResponseMessage responseMessage, TContent content)
         {
-            get { return ResponseMessage.GetHeaderValueAs<int>("X-Consul-Index"); }
-        }
+            StatusCode = responseMessage.StatusCode;
+            ReasonPhrase = responseMessage.ReasonPhrase;
+            Index = responseMessage.GetHeaderValueAs<int>("X-Consul-Index");
+            KnownLeader = responseMessage.GetHeaderValueAs<bool>("X-Consul-Knownleader");
+            LastContact = responseMessage.GetHeaderValueAs<int>("X-Consul-Lastcontact");
 
-        public bool KnownLeader
-        {
-            get { return ResponseMessage.GetHeaderValueAs<bool>("X-Consul-Knownleader"); }
-        }
-
-        public int LastContact
-        {
-            get { return ResponseMessage.GetHeaderValueAs<int>("X-Consul-Lastcontact");  }
-        }
-
-        public bool Found
-        {
-            get { return ResponseMessage.StatusCode == HttpStatusCode.OK; }
+            Content = content;
         }
     }
 }

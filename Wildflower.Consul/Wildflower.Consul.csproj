@@ -45,8 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsulClient.cs" />
-    <Compile Include="ConsulResponse.cs" />
     <Compile Include="KeyValueResponse.cs" />
+    <Compile Include="ServiceOperations.cs" />
     <Compile Include="WebExtensions\HttpResponseMessageExtensions.cs" />
     <Compile Include="WebExtensions\NameValueCollectionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
