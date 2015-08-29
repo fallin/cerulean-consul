@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Text;
 
 namespace Wildflower.Consul
 {
-    public class StorageValue
+    public class KeyValueResource
     {
         public int CreateIndex { get; set; }
         public int ModifyIndex { get; set; }
@@ -10,5 +11,11 @@ namespace Wildflower.Consul
         public string Key { get; set; }
         public int Flags { get; set; }
         public string Value { get; set; }
+
+        public string DecodeValue()
+        {
+            byte[] bytes = Convert.FromBase64String(Value);
+            return Encoding.UTF8.GetString(bytes);
+        }
     }
 }

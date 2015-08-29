@@ -37,3 +37,4 @@ using System.Runtime.InteropServices;
 
 [assembly: InternalsVisibleTo("Wildflower.Consul.Cli")]
 [assembly: InternalsVisibleTo("Wildflower.Consul.Tests")]
+[assembly: InternalsVisibleTo("LINQPadQuery")]

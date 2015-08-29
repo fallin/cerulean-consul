@@ -7,7 +7,7 @@ namespace Wildflower.Consul
     {
         bool _disposed;
         readonly HttpClient _client;
-        readonly Lazy<StorageOperations> _storage;
+        readonly Lazy<KeyValueOperations> _storage;
 
         public ConsulClient()
             : this(new Uri("http://localhost:8500/"))
@@ -19,10 +19,10 @@ namespace Wildflower.Consul
         {
             _client = new HttpClient {BaseAddress = address};
 
-            _storage = new Lazy<StorageOperations>(() => new StorageOperations(_client)); 
+            _storage = new Lazy<KeyValueOperations>(() => new KeyValueOperations(_client)); 
         }
 
-        public StorageOperations Storage
+        public KeyValueOperations KeyValue
         {
             get { return _storage.Value; }
         }
