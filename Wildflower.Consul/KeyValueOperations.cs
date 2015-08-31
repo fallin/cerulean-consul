@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -14,27 +14,47 @@ namespace Wildflower.Consul
             _client = client;
         }
 
-        public async Task<KeyValueResponse<KeyValueResource[]>> GetAllAsync()
+        public Task<KeyValueResponse<IList<KeyValue>>> GetAllAsync()
         {
-            string uri = "v1/kv/?recurse";
-            HttpResponseMessage response = await _client.GetAsync(uri);
-
-            KeyValueResource[] content = await ReadContentAsync<KeyValueResource[]>(response);
-            return new KeyValueResponse<KeyValueResource[]>(response, content);
+            return GetAsync(string.Empty, new KeyValueGetOptions {Recurse = true});
         }
 
-        public async Task<KeyValueResponse<KeyValueResource>> GetAsync(string key)
+        public async Task<KeyValueResponse<IList<KeyValue>>> GetAsync(string key, KeyValueGetOptions options = null)
         {
-            string uri = Uri.EscapeUriString(String.Format("v1/kv/{0}", key));
-            HttpResponseMessage response = await _client.GetAsync(uri);
-
-            KeyValueResource[] content = await ReadContentAsync<KeyValueResource[]>(response);
-            return new KeyValueResponse<KeyValueResource>(response, content.FirstOrDefault());
+            return await GetAsync<IList<KeyValue>>(key, options);
         }
 
-        public async Task<bool> PutAsync(string key, string value)
+        public async Task<KeyValueResponse<string>> GetRawAsync(string key, KeyValueGetRawOptions options = null)
         {
+            return await GetAsync<string>(key, options);
+        }
+
+        public async Task<KeyValueResponse<IList<string>>> GetKeysAsync(string key, KeyValueGetKeysOptions options = null)
+        {
+            return await GetAsync<IList<string>>(key, options);
+        }
+
+        async Task<KeyValueResponse<TContent>> GetAsync<TContent>(string key, Options options = null)
+        {
+            if (key == null) throw new ArgumentNullException("key");
+
             string uri = Uri.EscapeUriString(String.Format("v1/kv/{0}", key));
+            AppendQueryParameters(ref uri, options);
+
+            HttpResponseMessage response = await _client.GetAsync(uri);
+
+            TContent content = await ReadContentAsync<TContent>(response);
+            var reply = new KeyValueResponse<TContent>(response, content);
+            return reply;
+        }
+
+        public async Task<bool> PutAsync(string key, string value, KeyValuePutOptions options = null)
+        {
+            if (key == null) throw new ArgumentNullException("key");
+
+            string uri = Uri.EscapeUriString(String.Format("v1/kv/{0}", key));
+            AppendQueryParameters(ref uri, options);
+
             HttpContent content = new StringContent(value);
             HttpResponseMessage response = await _client.PutAsync(uri, content);
 
@@ -42,11 +62,14 @@ namespace Wildflower.Consul
             return reply;
         }
 
-        public async Task<bool> PutAsync(string key, string value, int flags)
+        public async Task<bool> DeleteAsync(string key, KeyValueDelOptions options = null)
         {
-            string uri = Uri.EscapeUriString(String.Format("v1/kv/{0}?flags={1}", key, flags));
-            HttpContent content = new StringContent(value);
-            HttpResponseMessage response = await _client.PutAsync(uri, content);
+            if (key == null) throw new ArgumentNullException("key");
+
+            string uri = Uri.EscapeUriString(String.Format("v1/kv/{0}", key));
+            AppendQueryParameters(ref uri, options);
+            
+            HttpResponseMessage response = await _client.DeleteAsync(uri);
 
             bool reply = await ReadContentAsync<bool>(response);
             return reply;

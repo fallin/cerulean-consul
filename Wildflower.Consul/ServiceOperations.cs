@@ -9,6 +9,26 @@ namespace Wildflower.Consul
 {
     public abstract class ServiceOperations
     {
+        protected void AppendQueryParameters(ref string uri, Options options)
+        {
+            if (options != null)
+            {
+                Query query = new Query();
+                options.BuildQuery(query);
+
+                AppendQueryParameters(ref uri, query);
+            }
+        }
+
+        protected void AppendQueryParameters(ref string uri, Query query)
+        {
+            string queryString = query.ToQueryString();
+            if (!string.IsNullOrEmpty(queryString))
+            {
+                uri += "?" + queryString;
+            }
+        }
+
         protected async Task<T> ReadContentAsync<T>(HttpResponseMessage response)
         {
             if (response == null) throw new ArgumentNullException("response");

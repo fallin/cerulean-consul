@@ -1,21 +1,20 @@
-﻿using System.Collections.Specialized;
+﻿using System;
 using FluentAssertions;
 using NUnit.Framework;
-using Wildflower.Consul.WebExtensions;
 
 namespace Wildflower.Consul.Tests.WebExtensions
 {
     [TestFixture]
-    public class NameValueCollectionExtensionsTests
+    public class QueryTests
     {
         [Test]
         public void ToQueryStringShouldReturnEmptyStringWhenEmptyCollection()
         {
             // Arrange
-            NameValueCollection collection = new NameValueCollection();
+            Query query = new Query();
 
             // Act
-            string queryString = collection.ToQueryString();
+            string queryString = query.ToQueryString();
 
             // Assert
             queryString.Should().BeEmpty();
@@ -25,13 +24,13 @@ namespace Wildflower.Consul.Tests.WebExtensions
         public void ToQueryStringShouldReturnQueryStringWhenSingleValueCollection()
         {
             // Arrange
-            NameValueCollection collection = new NameValueCollection
+            Query query = new Query
             {
-                {"flags", "42"}
+                {"flags", 42}
             };
 
             // Act
-            string queryString = collection.ToQueryString();
+            string queryString = query.ToQueryString();
 
             // Assert
             queryString.Should().Be("flags=42");
@@ -41,14 +40,14 @@ namespace Wildflower.Consul.Tests.WebExtensions
         public void ToQueryStringShouldReturnConcatenatedValuesWhenMultipleValueCollection()
         {
             // Arrange
-            NameValueCollection collection = new NameValueCollection
+            Query query = new Query
             {
-                {"flags", "42"},
+                {"flags", 42},
                 {"foo", "bar"}
             };
 
             // Act
-            string queryString = collection.ToQueryString();
+            string queryString = query.ToQueryString();
 
             // Assert
             queryString.Should().Be("flags=42&foo=bar");
@@ -58,13 +57,13 @@ namespace Wildflower.Consul.Tests.WebExtensions
         public void ToQueryStringShouldReturnUnaryValueWhenNameHasEmptyValue()
         {
             // Arrange
-            NameValueCollection collection = new NameValueCollection
+            Query query = new Query
             {
                 {"recurse", ""}
             };
 
             // Act
-            string queryString = collection.ToQueryString();
+            string queryString = query.ToQueryString();
 
             // Assert
             queryString.Should().Be("recurse");
@@ -74,13 +73,13 @@ namespace Wildflower.Consul.Tests.WebExtensions
         public void ToQueryStringShouldReturnUnaryValueWhenNameHasNullValue()
         {
             // Arrange
-            NameValueCollection collection = new NameValueCollection
+            Query query = new Query
             {
                 {"recurse", null}
             };
 
             // Act
-            string queryString = collection.ToQueryString();
+            string queryString = query.ToQueryString();
 
             // Assert
             queryString.Should().Be("recurse");
@@ -90,31 +89,31 @@ namespace Wildflower.Consul.Tests.WebExtensions
         public void ToQueryStringShouldIgnoreEmptyNames()
         {
             // Arrange
-            NameValueCollection collection = new NameValueCollection
+            Query query = new Query
             {
-                {"flags", "42"},
+                {"flags", 42},
                 {"", "a"}
             };
 
             // Act
-            string queryString = collection.ToQueryString();
+            string queryString = query.ToQueryString();
 
             // Assert
             queryString.Should().Be("flags=42");
         }
 
-        [Test]
+        [Test, Ignore("Dictionary does not allow null key")]
         public void ToQueryStringShouldIgnoreNullNames()
         {
             // Arrange
-            NameValueCollection collection = new NameValueCollection
+            Query query = new Query
             {
-                {"flags", "42"},
+                {"flags", 42},
                 {null, "a"}
             };
 
             // Act
-            string queryString = collection.ToQueryString();
+            string queryString = query.ToQueryString();
 
             // Assert
             queryString.Should().Be("flags=42");
