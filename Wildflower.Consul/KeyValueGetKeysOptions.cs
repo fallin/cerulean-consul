@@ -2,20 +2,16 @@
 
 namespace Wildflower.Consul
 {
-    public class KeyValueGetKeysOptions : Options
+    public class KeyValueGetKeysOptions : KeyValueOptions
     {
-        public string DataCenter { get; set; }
         public long? Index { get; set; }
         public char? Separator { get; set; }
 
         public override void BuildQuery(Query query)
         {
-            query.Add("keys");
+            base.BuildQuery(query);
 
-            if (!string.IsNullOrEmpty(DataCenter))
-            {
-                query.Add("dc", DataCenter);
-            }
+            query.Add("keys");
 
             if (Index.HasValue)
             {

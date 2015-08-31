@@ -2,19 +2,15 @@
 
 namespace Wildflower.Consul
 {
-    public class KeyValueGetRawOptions : Options
+    public class KeyValueGetRawOptions : KeyValueOptions
     {
-        public string DataCenter { get; set; }
         public long? Index { get; set; }
 
         public override void BuildQuery(Query query)
         {
-            query.Add("raw");
+            base.BuildQuery(query);
 
-            if (!string.IsNullOrEmpty(DataCenter))
-            {
-                query.Add("dc", DataCenter);
-            }
+            query.Add("raw");
 
             if (Index.HasValue)
             {

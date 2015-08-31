@@ -2,14 +2,26 @@
 
 namespace Wildflower.Consul
 {
-    public class KeyValuePutOptions : Options
+    public class KeyValuePutOptions : KeyValueOptions
     {
         public long? Flags { get; set; }
         public long? CheckAndSet { get; set; }
         public LockOperation LockOperation { get; set; }
 
+        public void AcquireLock(Guid session)
+        {
+            LockOperation = new AcquireLock(session);
+        }
+
+        public void ReleaseLock(Guid session)
+        {
+            LockOperation = new ReleaseLock(session);
+        }
+
         public override void BuildQuery(Query query)
         {
+            base.BuildQuery(query);
+
             if (Flags.HasValue)
             {
                 query.Add("flags", Flags);
@@ -24,44 +36,6 @@ namespace Wildflower.Consul
             {
                 LockOperation.BuildQuery(query);
             }
-        }
-    }
-
-    public abstract class LockOperation : IQueryProvider
-    {
-        public Guid Session { get; private set; }
-
-        protected LockOperation(Guid session)
-        {
-            Session = session;
-        }
-
-        public abstract void BuildQuery(Query query);
-    }
-
-    public class AcquireLock : LockOperation
-    {
-        public AcquireLock(Guid session)
-            : base(session)
-        {
-        }
-
-        public override void BuildQuery(Query query)
-        {
-            query.Add("acquire", Session);
-        }
-    }
-
-    public class ReleaseLock : LockOperation
-    {
-        public ReleaseLock(Guid session)
-            : base(session)
-        {
-        }
-
-        public override void BuildQuery(Query query)
-        {
-            query.Add("release", Session);
         }
     }
 }

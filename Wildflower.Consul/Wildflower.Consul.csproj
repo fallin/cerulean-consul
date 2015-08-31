@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcquireLock.cs" />
     <Compile Include="ConsulClient.cs" />
     <Compile Include="ConsulResponse.cs" />
     <Compile Include="IQueryProvider.cs" />
@@ -51,10 +52,12 @@
     <Compile Include="KeyValueGetKeysOptions.cs" />
     <Compile Include="KeyValueGetOptions.cs" />
     <Compile Include="KeyValueGetRawOptions.cs" />
+    <Compile Include="KeyValueOptions.cs" />
     <Compile Include="KeyValuePutOptions.cs" />
     <Compile Include="KeyValueResponse.cs" />
-    <Compile Include="Options.cs" />
+    <Compile Include="LockOperation.cs" />
     <Compile Include="Query.cs" />
+    <Compile Include="ReleaseLock.cs" />
     <Compile Include="ServiceOperations.cs" />
     <Compile Include="WebExtensions\HttpResponseMessageExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
