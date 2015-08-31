@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Cerulean.Consul</id>
+        <version>0.1.0</version>
+        <title>Cerulean Consul API</title>
+        <authors>Brant Fallin</authors>
+        <owners>fallin</owners>
+        <licenseUrl>https://github.com/fallin/cerulean-consul/blob/master/LICENSE.txt</licenseUrl>
+        <projectUrl>https://github.com/fallin/cerulean-consul</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>.NET client API for Consul (https://www.consul.io/)</description>
+        <copyright>Copyright ©  2015</copyright>
+        <language>en-US</language>
+        <tags>consul</tags>
+        <dependencies>
+            <dependency id="Newtonsoft.Json" version="7.0.1" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\Cerulean.Consul\bin\Release\Cerulean.Consul.dll" target="lib\net451\Cerulean.Consul.dll" />
+    </files>
+</package>
