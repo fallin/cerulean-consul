@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cerulean.Consul", "Wildflower.Consul\Cerulean.Consul.csproj", "{3DBDDDF9-23AF-4970-BAFE-0342250DEA24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cerulean.Consul", "Cerulean.Consul\Cerulean.Consul.csproj", "{3DBDDDF9-23AF-4970-BAFE-0342250DEA24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cerulean.Consul.Tests", "Wildflower.Consul.Tests\Cerulean.Consul.Tests.csproj", "{DE18A9AD-2BB0-4A87-9D96-8E2D53A9BF90}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cerulean.Consul.Tests", "Cerulean.Consul.Tests\Cerulean.Consul.Tests.csproj", "{DE18A9AD-2BB0-4A87-9D96-8E2D53A9BF90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

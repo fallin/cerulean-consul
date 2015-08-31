@@ -68,7 +68,7 @@
     <EmbeddedResource Include="TestCases\KeyValueGetSingleKeyResponse.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Wildflower.Consul\Cerulean.Consul.csproj">
+    <ProjectReference Include="..\Cerulean.Consul\Cerulean.Consul.csproj">
       <Project>{3dbdddf9-23af-4970-bafe-0342250dea24}</Project>
       <Name>Cerulean.Consul</Name>
     </ProjectReference>

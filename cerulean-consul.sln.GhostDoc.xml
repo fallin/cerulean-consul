@@ -14,7 +14,7 @@
 <HelpConfigurations selected="HelpFile">
   <HelpConfiguration name="HelpFile">
     <OutputPath>.\Help</OutputPath>
-    <HelpFileName>wildflower-consul</HelpFileName>
+    <HelpFileName>cerulean-consul</HelpFileName>
     <ImageFolderPath />
     <HtmlFormats>
       <HtmlHelp>true</HtmlHelp>
