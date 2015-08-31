@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
-namespace Wildflower.Consul
+namespace Cerulean.Consul
 {
     public class JObjectQueryProvider : IQueryProvider
     {

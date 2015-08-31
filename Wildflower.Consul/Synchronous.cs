@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Wildflower.Consul
+namespace Cerulean.Consul
 {
     static class Synchronous
     {

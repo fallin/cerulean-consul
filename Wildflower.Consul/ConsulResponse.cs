@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Http;
 
-namespace Wildflower.Consul
+namespace Cerulean.Consul
 {
     public class ConsulResponse
     {

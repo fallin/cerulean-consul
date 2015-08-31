@@ -2,7 +2,7 @@
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Wildflower.Consul.Tests.WebExtensions
+namespace Cerulean.Consul.Tests.WebExtensions
 {
     [TestFixture]
     public class QueryTests

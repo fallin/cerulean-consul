@@ -1,6 +1,6 @@
 using System;
 
-namespace Wildflower.Consul
+namespace Cerulean.Consul
 {
     public static class KeyValueOperationsExtensions
     {

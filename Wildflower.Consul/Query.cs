@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
-namespace Wildflower.Consul
+namespace Cerulean.Consul
 {
     public class Query : IEnumerable<KeyValuePair<String, object>>
     {

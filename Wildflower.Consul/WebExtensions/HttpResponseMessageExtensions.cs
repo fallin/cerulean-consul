@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
 
-namespace Wildflower.Consul.WebExtensions
+namespace Cerulean.Consul.WebExtensions
 {
     static class HttpResponseMessageExtensions
     {

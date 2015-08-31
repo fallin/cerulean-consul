@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Wildflower.Consul")]
+[assembly: AssemblyTitle("Cerulean.Consul")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Wildflower.Consul")]
+[assembly: AssemblyProduct("Cerulean.Consul")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -35,6 +35,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
-[assembly: InternalsVisibleTo("Wildflower.Consul.Cli")]
-[assembly: InternalsVisibleTo("Wildflower.Consul.Tests")]
+[assembly: InternalsVisibleTo("Cerulean.Consul.Tests")]
 [assembly: InternalsVisibleTo("LINQPadQuery")]

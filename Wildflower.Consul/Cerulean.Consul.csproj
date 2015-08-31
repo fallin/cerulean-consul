@@ -7,8 +7,8 @@
     <ProjectGuid>{3DBDDDF9-23AF-4970-BAFE-0342250DEA24}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Wildflower.Consul</RootNamespace>
-    <AssemblyName>Wildflower.Consul</AssemblyName>
+    <RootNamespace>Cerulean.Consul</RootNamespace>
+    <AssemblyName>Cerulean.Consul</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

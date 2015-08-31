@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 
-namespace Wildflower.Consul
+namespace Cerulean.Consul
 {
     public class ConsulClient : IDisposable
     {

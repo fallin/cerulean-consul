@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Wildflower.Consul.Tests.TestingUtilities
+namespace Cerulean.Consul.Tests.TestingUtilities
 {
     public class EmbeddedResourceLoader
     {

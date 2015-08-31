@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Wildflower.Consul
+namespace Cerulean.Consul
 {
     public class KeyValue
     {

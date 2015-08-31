@@ -7,8 +7,8 @@
     <ProjectGuid>{DE18A9AD-2BB0-4A87-9D96-8E2D53A9BF90}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Wildflower.Consul.Tests</RootNamespace>
-    <AssemblyName>Wildflower.Consul.Tests</AssemblyName>
+    <RootNamespace>Cerulean.Consul.Tests</RootNamespace>
+    <AssemblyName>Cerulean.Consul.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -68,9 +68,9 @@
     <EmbeddedResource Include="TestCases\KeyValueGetSingleKeyResponse.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Wildflower.Consul\Wildflower.Consul.csproj">
+    <ProjectReference Include="..\Wildflower.Consul\Cerulean.Consul.csproj">
       <Project>{3dbdddf9-23af-4970-bafe-0342250dea24}</Project>
-      <Name>Wildflower.Consul</Name>
+      <Name>Cerulean.Consul</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

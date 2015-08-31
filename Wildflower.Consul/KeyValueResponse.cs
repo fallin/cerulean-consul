@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net.Http;
-using Wildflower.Consul.WebExtensions;
+using Cerulean.Consul.WebExtensions;
 
-namespace Wildflower.Consul
+namespace Cerulean.Consul
 {
     public class KeyValueResponse<TContent> : ConsulResponse
     {

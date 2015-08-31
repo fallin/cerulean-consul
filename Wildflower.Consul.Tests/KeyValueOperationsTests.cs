@@ -2,13 +2,13 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Cerulean.Consul.Tests.TestingUtilities;
 using FluentAssertions;
 using Moq;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
-using Wildflower.Consul.Tests.TestingUtilities;
 
-namespace Wildflower.Consul.Tests
+namespace Cerulean.Consul.Tests
 {
     [TestFixture]
     public class KeyValueOperationsTests

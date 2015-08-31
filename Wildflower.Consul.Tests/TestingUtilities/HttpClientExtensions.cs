@@ -9,7 +9,7 @@ using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
 
-namespace Wildflower.Consul.Tests.TestingUtilities
+namespace Cerulean.Consul.Tests.TestingUtilities
 {
     static class HttpClientExtensions
     {

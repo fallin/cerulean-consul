@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Wildflower.Consul
+namespace Cerulean.Consul
 {
     public abstract class ServiceOperations
     {
