@@ -1,4 +1,6 @@
 using System;
+using System.ComponentModel;
+using System.Dynamic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -9,12 +11,12 @@ namespace Wildflower.Consul
 {
     public abstract class ServiceOperations
     {
-        protected void AppendQueryParameters(ref string uri, Options options)
+        protected void AppendQueryParameters(ref string uri, IQueryProvider queryProvider)
         {
-            if (options != null)
+            if (queryProvider != null)
             {
                 Query query = new Query();
-                options.BuildQuery(query);
+                queryProvider.BuildQuery(query);
 
                 AppendQueryParameters(ref uri, query);
             }
@@ -41,15 +43,41 @@ namespace Wildflower.Consul
             else
             {
                 response.EnsureSuccessStatusCode();
-                
-                JsonSerializer serializer = JsonSerializer.CreateDefault();
-                Stream stream = await response.Content.ReadAsStreamAsync();
-                using (StreamReader streamReader = new StreamReader(stream))
+
+                string mediaType = response.Content.Headers.ContentType.MediaType;
+                if (mediaType == "application/json")
                 {
-                    using (JsonTextReader jsonReader = new JsonTextReader(streamReader))
+                    JsonSerializer serializer = JsonSerializer.CreateDefault();
+                    Stream stream = await response.Content.ReadAsStreamAsync();
+                    using (StreamReader streamReader = new StreamReader(stream))
                     {
-                        content = serializer.Deserialize<T>(jsonReader);
+                        using (JsonTextReader jsonReader = new JsonTextReader(streamReader))
+                        {
+                            content = serializer.Deserialize<T>(jsonReader);
+                        }
                     }
+                }
+                else if (mediaType == "text/plain")
+                {
+                    Stream stream = await response.Content.ReadAsStreamAsync();
+                    using (StreamReader streamReader = new StreamReader(stream))
+                    {
+                        string text = streamReader.ReadToEnd();
+
+                        if (typeof(T) == typeof(string) || typeof(T).IsAssignableFrom(typeof(IDynamicMetaObjectProvider)))
+                        {
+                            content = (T)(object)text;
+                        }
+                        else
+                        {
+                            TypeConverter converter = TypeDescriptor.GetConverter(typeof(T));
+                            content = (T)converter.ConvertFromString(text);
+                        }
+                    }
+                }
+                else
+                {
+                    throw new NotSupportedException(string.Format("Unsupported media type: {0}", mediaType));
                 }
             }
 

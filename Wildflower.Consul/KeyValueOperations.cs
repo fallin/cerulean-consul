@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace Wildflower.Consul
 {
@@ -34,7 +35,7 @@ namespace Wildflower.Consul
             return await GetAsync<IList<string>>(key, options);
         }
 
-        async Task<KeyValueResponse<TContent>> GetAsync<TContent>(string key, Options options = null)
+        async Task<KeyValueResponse<TContent>> GetAsync<TContent>(string key, KeyValueOptions options = null)
         {
             if (key == null) throw new ArgumentNullException("key");
 
@@ -45,6 +46,23 @@ namespace Wildflower.Consul
 
             TContent content = await ReadContentAsync<TContent>(response);
             var reply = new KeyValueResponse<TContent>(response, content);
+            return reply;
+        }
+
+        public async Task<KeyValueResponse<dynamic>> GetDynamicAsync(string key, object options = null)
+        {
+            if (key == null) throw new ArgumentNullException("key");
+
+            string uri = Uri.EscapeUriString(String.Format("v1/kv/{0}", key));
+
+            JObject jo = JObject.FromObject(options);
+            JObjectQueryProvider queryProvider = new JObjectQueryProvider(jo);
+            AppendQueryParameters(ref uri, queryProvider);
+
+            HttpResponseMessage response = await _client.GetAsync(uri);
+
+            dynamic content = await ReadContentAsync<dynamic>(response);
+            var reply = new KeyValueResponse<dynamic>(response, content);
             return reply;
         }
 

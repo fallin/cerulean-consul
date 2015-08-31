@@ -48,6 +48,7 @@
     <Compile Include="ConsulClient.cs" />
     <Compile Include="ConsulResponse.cs" />
     <Compile Include="IQueryProvider.cs" />
+    <Compile Include="JObjectQueryProvider.cs" />
     <Compile Include="KeyValueDelOptions.cs" />
     <Compile Include="KeyValueGetKeysOptions.cs" />
     <Compile Include="KeyValueGetOptions.cs" />
