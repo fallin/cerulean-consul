@@ -41,11 +41,12 @@ namespace Cerulean.Consul
         {
             string stringValue = (pair.Value == null)
                 ? string.Empty
-                : pair.Value.ToString();
+                : pair.Value.ToString().ToLowerInvariant();
+            string key = pair.Key.ToLowerInvariant();
 
             var assignment = string.IsNullOrEmpty(stringValue)
-                ? pair.Key
-                : string.Format("{0}={1}", pair.Key, WebUtility.UrlEncode(stringValue));
+                ? key
+                : string.Format("{0}={1}", key, WebUtility.UrlEncode(stringValue));
 
             return assignment;
         }

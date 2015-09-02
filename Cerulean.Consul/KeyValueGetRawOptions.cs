@@ -2,7 +2,7 @@
 
 namespace Cerulean.Consul
 {
-    public class KeyValueGetRawOptions : KeyValueOptions
+    public sealed class KeyValueGetRawOptions : KeyValueOptions
     {
         public long? Index { get; set; }
 

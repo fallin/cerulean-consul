@@ -2,7 +2,7 @@
 
 namespace Cerulean.Consul
 {
-    public class KeyValueDelOptions : KeyValueOptions
+    public sealed class KeyValueDelOptions : KeyValueOptions
     {
         public bool Recurse { get; set; }
         public long? CheckAndSet { get; set; }
