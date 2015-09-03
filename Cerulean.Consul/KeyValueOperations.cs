@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
@@ -15,27 +14,24 @@ namespace Cerulean.Consul
             _client = client;
         }
 
-        public Task<KeyValueResponse<IList<KeyValue>>> GetAllAsync()
+        public Task<KeyValueResponse<KeyValue[]>> GetAllAsync()
         {
             return GetAsync(string.Empty, opt => opt.Recurse = true);
         }
 
-        public async Task<KeyValueResponse<IList<KeyValue>>> GetAsync(string key, Action<KeyValueGetOptions> opts = null)
+        public async Task<KeyValueResponse<KeyValue[]>> GetAsync(string key, Action<KeyValueGetOptions> options = null)
         {
-            var options = AssignOptions(opts);
-            return await GetAsync<IList<KeyValue>>(key, options);
+            return await GetAsync<KeyValue[]>(key, AssignOptions(options));
         }
 
-        public async Task<KeyValueResponse<string>> GetRawAsync(string key, Action<KeyValueGetRawOptions> opts = null)
+        public async Task<KeyValueResponse<string>> GetRawAsync(string key, Action<KeyValueGetRawOptions> options = null)
         {
-            var options = AssignOptions(opts);
-            return await GetAsync<string>(key, options);
+            return await GetAsync<string>(key, AssignOptions(options));
         }
 
-        public async Task<KeyValueResponse<IList<string>>> GetKeysAsync(string key, Action<KeyValueGetKeysOptions> opts = null)
+        public async Task<KeyValueResponse<string[]>> GetKeysAsync(string key, Action<KeyValueGetKeysOptions> options = null)
         {
-            var options = AssignOptions(opts);
-            return await GetAsync<IList<string>>(key, options);
+            return await GetAsync<string[]>(key, AssignOptions(options));
         }
 
         public async Task<KeyValueResponse<dynamic>> GetDynamicAsync(string key, dynamic options = null)
@@ -55,13 +51,12 @@ namespace Cerulean.Consul
             return reply;
         }
 
-        public async Task<bool> PutAsync(string key, string value, Action<KeyValuePutOptions> opts = null)
+        public async Task<bool> PutAsync(string key, string value, Action<KeyValuePutOptions> options = null)
         {
             if (key == null) throw new ArgumentNullException("key");
 
             string uri = Uri.EscapeUriString(String.Format("v1/kv/{0}", key));
-            var options = AssignOptions(opts);
-            AppendQueryParameters(ref uri, options);
+            AppendQueryParameters(ref uri, AssignOptions(options));
 
             HttpContent content = new StringContent(value);
             HttpResponseMessage response = await _client.PutAsync(uri, content);
@@ -70,13 +65,12 @@ namespace Cerulean.Consul
             return reply;
         }
 
-        public async Task<bool> DeleteAsync(string key, Action<KeyValueDelOptions> opts = null)
+        public async Task<bool> DeleteAsync(string key, Action<KeyValueDelOptions> options = null)
         {
             if (key == null) throw new ArgumentNullException("key");
 
             string uri = Uri.EscapeUriString(String.Format("v1/kv/{0}", key));
-            var options = AssignOptions(opts);
-            AppendQueryParameters(ref uri, options);
+            AppendQueryParameters(ref uri, AssignOptions(options));
             
             HttpResponseMessage response = await _client.DeleteAsync(uri);
 
