@@ -1,18 +1,18 @@
 # cerulean-consul
 .NET client API for Consul (https://www.consul.io/)
 
-This library uses HttpClient and [Json.NET](http://www.newtonsoft.com/json) to provide a convenient (and hopefully) easy to use API to access Consul features. It currently only supports the Key-Value API, but that will be fixed.
+This library uses HttpClient and [Json.NET](http://www.newtonsoft.com/json) to provide a convenient (and hopefully) easy to use API to access Consul features. It currently only supports the Key-Value API, but that will be improved.
 
 Note, this is a 0.x release, so expect breaking API changes without notice for a while...
 
 The NuGet package, targeting .NET 4.5.1, is available here [Cerulean Consul API](https://www.nuget.org/packages/Cerulean.Consul/)
 
 ## Usage
-The Consul website provides great documentation. The following are examples of performing the operations from the [Getting Started | Key/Value Data](http://www.consul.io/intro/getting-started/kv.html)documentation.
+The Consul website provides great documentation. The following are a few examples of performing the same operations as shown in the [Getting Started | Key/Value Data](http://www.consul.io/intro/getting-started/kv.html) documentation.
 
 KeyValue.GetAllAsync() is equivalent to GET "v1/kv/?recurse". Because the key-value store is empty, Consul will return a 404 Not Found which is accessible on the response object.
 
-Instead of returning the key-values (HTTP content) directly, the "Get" methods return KeyValueResponse&lt;IList&lt;KeyValue&gt;&gt; which provides access the HTTP status code, Consul headers, and the content. **Note: while access to the status code and headers can be useful, it's awkward and likely to be improved soon. Expect a breaking change here soon!**
+Instead of returning the key-values (HTTP content) directly, the "Get" methods return KeyValueResponse&lt;KeyValue[]&gt; which provides access the HTTP status code, Consul headers, and key/value content.
 
 ```csharp
 using (var client = new ConsulClient())
@@ -34,7 +34,7 @@ using (var client = new ConsulClient())
     result = await client.KeyValue.PutAsync("web/key1", "test");
     Console.WriteLine(result);
     
-    result = await client.KeyValue.PutAsync("web/key2", "test", opts => opts.Flags = 42);
+    result = await client.KeyValue.PutAsync("web/key2", "test", o => o.Flags = 42);
     Console.WriteLine(result);
     
     result = await client.KeyValue.PutAsync("web/sub/key3", "test");
@@ -47,37 +47,28 @@ Read the "key1" key:
 ```csharp
 using (var client = new ConsulClient())
 {
-    var response = await client.KeyValue.GetAsync("web/sub", opts => opts.Recurse = true);
+    var response = await client.KeyValue.GetAsync("web/sub", o => o.Recurse = true);
     Console.WriteLine(JsonConvert.SerializeObject(response.Content));
 }
 ```
 
-Write value with check-and-set semantics
+Write values with check-and-set semantics
 ```csharp
 using (var client = new ConsulClient())
 {
     var response = await client.KeyValue.GetAsync("web/key1");
     long cas = response.Index;
 
-    bool success1 = await client.KeyValue.PutAsync("web/key1", "newval", opts =>
+    bool success1 = await client.KeyValue.PutAsync("web/key1", "newval", o =>
     {
-        opts.CheckAndSet = cas;
+        o.CheckAndSet = cas;
     });
     Console.WriteLine(success1);
     
-    bool success2 = await client.KeyValue.PutAsync("web/key1", "newval", opts =>
+    bool success2 = await client.KeyValue.PutAsync("web/key1", "newval", o =>
     {
-        opts.CheckAndSet = cas;
+        o.CheckAndSet = cas;
     });
     Console.WriteLine(success2);
 }
 ```
-
-More soon...
-
-Change Log
-
-2015-09-01
-
-The KeyValue.Get, Put & Delete methods now use an optional function to assign desired options. The benefit is each method creates the appropriate concrete options class which should make the API more discoverable. For example, the caller no longer needs to create the KeyValueGetRawOptions when using the GetRaw method which (I think) makes for nicer usage.
-
