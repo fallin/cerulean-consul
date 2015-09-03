@@ -6,7 +6,7 @@ namespace Cerulean.Consul
     {
         public long? Flags { get; set; }
         public long? CheckAndSet { get; set; }
-        public LockOperation LockOperation { get; set; }
+        LockOperation LockOperation { get; set; }
 
         public void AcquireLock(Guid session)
         {

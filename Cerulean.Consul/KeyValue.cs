@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace Cerulean.Consul
 {
@@ -11,7 +12,9 @@ namespace Cerulean.Consul
         public string Key { get; set; }
         public uint Flags { get; set; }
         public string Value { get; set; }
-        public Guid Session { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public Guid? Session { get; set; }
 
         public string DecodeValue()
         {
