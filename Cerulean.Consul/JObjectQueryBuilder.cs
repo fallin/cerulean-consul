@@ -4,11 +4,11 @@ using Newtonsoft.Json.Linq;
 
 namespace Cerulean.Consul
 {
-    public class JObjectQueryProvider : IQueryProvider
+    public class JObjectQueryBuilder : IQueryBuilder
     {
         readonly JObject _jo;
 
-        public JObjectQueryProvider(JObject jo)
+        public JObjectQueryBuilder(JObject jo)
         {
             _jo = jo;
         }

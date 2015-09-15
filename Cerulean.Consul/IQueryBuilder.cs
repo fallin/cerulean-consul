@@ -2,7 +2,7 @@
 
 namespace Cerulean.Consul
 {
-    public interface IQueryProvider
+    public interface IQueryBuilder
     {
         void BuildQuery(Query query);
     }

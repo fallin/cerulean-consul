@@ -2,7 +2,7 @@
 using System.Net.Http;
 using Cerulean.Consul.WebExtensions;
 
-namespace Cerulean.Consul
+namespace Cerulean.Consul.KeyValueStore
 {
     public class KeyValueResponse<TContent> : ConsulResponse
     {

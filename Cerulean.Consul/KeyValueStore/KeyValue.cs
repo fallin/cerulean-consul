@@ -2,7 +2,7 @@
 using System.Text;
 using Newtonsoft.Json;
 
-namespace Cerulean.Consul
+namespace Cerulean.Consul.KeyValueStore
 {
     public class KeyValue
     {

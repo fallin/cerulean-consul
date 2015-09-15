@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Cerulean.Consul
+namespace Cerulean.Consul.KeyValueStore
 {
-    public abstract class LockOperation : IQueryProvider
+    public abstract class LockOperation : IQueryBuilder
     {
         public Guid Session { get; private set; }
 

@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Cerulean.Consul
+namespace Cerulean.Consul.KeyValueStore
 {
-    public sealed class KeyValueDelOptions : KeyValueOptions
+    public sealed class KeyValueGetParameters : KeyValueParameters
     {
         public bool Recurse { get; set; }
-        public long? CheckAndSet { get; set; }
+        public long? Index { get; set; }
 
         public override void BuildQuery(Query query)
         {
@@ -16,9 +16,9 @@ namespace Cerulean.Consul
                 query.Add("recurse");
             }
 
-            if (CheckAndSet.HasValue)
+            if (Index.HasValue)
             {
-                query.Add("cas", CheckAndSet);
+                query.Add("index", Index);
             }
         }
     }

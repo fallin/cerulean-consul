@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Cerulean.Consul
+namespace Cerulean.Consul.KeyValueStore
 {
-    public sealed class KeyValuePutOptions : KeyValueOptions
+    public sealed class KeyValuePutParameters : KeyValueParameters
     {
         public long? Flags { get; set; }
         public long? CheckAndSet { get; set; }

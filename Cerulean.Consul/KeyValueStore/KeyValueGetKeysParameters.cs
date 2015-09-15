@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Cerulean.Consul
+namespace Cerulean.Consul.KeyValueStore
 {
-    public sealed class KeyValueGetKeysOptions : KeyValueOptions
+    public sealed class KeyValueGetKeysParameters : KeyValueParameters
     {
         public long? Index { get; set; }
         public char? Separator { get; set; }

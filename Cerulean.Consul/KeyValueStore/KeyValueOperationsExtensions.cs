@@ -1,6 +1,6 @@
 using System;
 
-namespace Cerulean.Consul
+namespace Cerulean.Consul.KeyValueStore
 {
     public static class KeyValueOperationsExtensions
     {

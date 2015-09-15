@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Cerulean.Consul.KeyValueStore;
 using Cerulean.Consul.Tests.TestingUtilities;
 using FluentAssertions;
 using Moq;

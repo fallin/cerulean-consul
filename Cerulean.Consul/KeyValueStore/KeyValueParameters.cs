@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Cerulean.Consul
+namespace Cerulean.Consul.KeyValueStore
 {
-    public abstract class KeyValueOptions : IQueryProvider
+    public abstract class KeyValueParameters : IQueryBuilder
     {
         public string DataCenter { get; set; }
 
