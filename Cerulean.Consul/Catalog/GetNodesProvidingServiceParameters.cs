@@ -4,15 +4,11 @@ namespace Cerulean.Consul.Catalog
 {
     public class GetNodesProvidingServiceParameters : CatalogParameters
     {
-        public string Tag { get; set; }
-
-        public override void BuildQuery(Query query)
+        public void Tag(string tag)
         {
-            base.BuildQuery(query);
-
-            if (!string.IsNullOrEmpty(Tag))
+            if (!string.IsNullOrEmpty(tag))
             {
-                query.Add("tag", Tag);
+                Add("tag", tag);
             }
         }
     }

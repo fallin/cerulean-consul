@@ -18,8 +18,7 @@ namespace Cerulean.Consul.Agent
         /// </summary>
         public async Task<IDictionary<string, AgentCheck>> GetChecksAsync()
         {
-            string uri = Uri.EscapeUriString("v1/agent/checks");
-            //AppendQueryParameters(ref uri, CollectParameters(parameters));
+            string uri = ConstructUri(null, "v1/agent/checks");
 
             HttpResponseMessage response = await Client.GetAsync(uri);
             var reply = await response.ReadContentAsync<IDictionary<string, AgentCheck>>();
@@ -31,8 +30,7 @@ namespace Cerulean.Consul.Agent
         /// </summary>
         public async Task<IDictionary<string, ServiceDescriptor>> GetServicesAsync()
         {
-            string uri = Uri.EscapeUriString("v1/agent/services");
-            //AppendQueryParameters(ref uri, CollectParameters(parameters));
+            string uri = ConstructUri(null, "v1/agent/services");
 
             HttpResponseMessage response = await Client.GetAsync(uri);
             var reply = await response.ReadContentAsync<IDictionary<string, ServiceDescriptor>>();
@@ -44,8 +42,7 @@ namespace Cerulean.Consul.Agent
         /// </summary>
         public async Task<AgentMember[]> GetMembersAsync()
         {
-            string uri = Uri.EscapeUriString("v1/agent/members");
-            //AppendQueryParameters(ref uri, CollectParameters(parameters));
+            string uri = ConstructUri(null, "v1/agent/members");
 
             HttpResponseMessage response = await Client.GetAsync(uri);
             var reply = await response.ReadContentAsync<AgentMember[]>();
@@ -57,8 +54,7 @@ namespace Cerulean.Consul.Agent
         /// </summary>
         public async Task<LocalAgent> GetSelfAsync()
         {
-            string uri = Uri.EscapeUriString("v1/agent/self");
-            //AppendQueryParameters(ref uri, CollectParameters(parameters));
+            string uri = ConstructUri(null, "v1/agent/self");
 
             HttpResponseMessage response = await Client.GetAsync(uri);
             var reply = await response.ReadContentAsync<LocalAgent>();

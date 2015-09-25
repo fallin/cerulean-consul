@@ -27,8 +27,9 @@ namespace Cerulean.Consul.Catalog
         /// <summary>
         /// Get nodes registered in a given DC.
         /// </summary>
-        public async Task<NodeDescriptor[]> GetNodesAsync(Action<GetNodesParameters> parameters = null)
+        public async Task<NodeDescriptor[]> GetNodesAsync(Action<GetNodesParameters> config = null)
         {
+            var parameters = ConfigureParameters(config, new GetNodesParameters());
             string uri = ConstructUri(parameters, "v1/catalog/nodes");
 
             HttpResponseMessage response = await Client.GetAsync(uri);
@@ -39,8 +40,9 @@ namespace Cerulean.Consul.Catalog
         /// <summary>
         /// Get the services registered in a given DC.
         /// </summary>
-        public async Task<IDictionary<string, ServiceTags>> GetServicesAsync(Action<GetServicesParameters> parameters = null)
+        public async Task<IDictionary<string, ServiceTags>> GetServicesAsync(Action<GetServicesParameters> config = null)
         {
+            var parameters = ConfigureParameters(config, new GetServicesParameters());
             string uri = ConstructUri(parameters, "v1/catalog/services");
 
             HttpResponseMessage response = await Client.GetAsync(uri);
@@ -51,8 +53,9 @@ namespace Cerulean.Consul.Catalog
         /// <summary>
         /// Get the nodes providing a service in a given DC.
         /// </summary>
-        public async Task<ServiceNode[]> GetNodesProvidingServiceAsync(string service, Action<GetNodesProvidingServiceParameters> parameters = null)
+        public async Task<ServiceNode[]> GetNodesProvidingServiceAsync(string service, Action<GetNodesProvidingServiceParameters> config = null)
         {
+            var parameters = ConfigureParameters(config, new GetNodesProvidingServiceParameters());
             string uri = ConstructUri(parameters, "v1/catalog/service/{0}", service);
 
             HttpResponseMessage response = await Client.GetAsync(uri);
@@ -63,8 +66,9 @@ namespace Cerulean.Consul.Catalog
         /// <summary>
         /// Get a node's registered services.
         /// </summary>
-        public async Task<NodeServices> GetNodeServicesAsync(string node, Action<GetNodeServicesParameters> parameters = null)
+        public async Task<NodeServices> GetNodeServicesAsync(string node, Action<GetNodeServicesParameters> config = null)
         {
+            var parameters = ConfigureParameters(config, new GetNodeServicesParameters());
             string uri = ConstructUri(parameters, "v1/catalog/node/{0}", node);
 
             HttpResponseMessage response = await Client.GetAsync(uri);

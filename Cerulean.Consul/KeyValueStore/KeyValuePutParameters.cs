@@ -4,38 +4,24 @@ namespace Cerulean.Consul.KeyValueStore
 {
     public sealed class KeyValuePutParameters : KeyValueParameters
     {
-        public long? Flags { get; set; }
-        public long? CheckAndSet { get; set; }
-        LockOperation LockOperation { get; set; }
-
-        public void AcquireLock(Guid session)
+        public void Flags(long flags)
         {
-            LockOperation = new AcquireLock(session);
+            Add("flags", flags);
         }
 
-        public void ReleaseLock(Guid session)
+        public void CheckAndSet(long index)
         {
-            LockOperation = new ReleaseLock(session);
+            Add("cas", index);
         }
 
-        public override void BuildQuery(Query query)
+        public void Acquire(Guid session)
         {
-            base.BuildQuery(query);
+            Add("acquire", session);
+        }
 
-            if (Flags.HasValue)
-            {
-                query.Add("flags", Flags);
-            }
-
-            if (CheckAndSet.HasValue)
-            {
-                query.Add("cas", CheckAndSet);
-            }
-
-            if (LockOperation != null)
-            {
-                LockOperation.BuildQuery(query);
-            }
+        public void Release(Guid session)
+        {
+            Add("release", session);
         }
     }
 }

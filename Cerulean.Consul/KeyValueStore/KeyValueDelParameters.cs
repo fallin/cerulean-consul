@@ -4,22 +4,14 @@ namespace Cerulean.Consul.KeyValueStore
 {
     public sealed class KeyValueDelParameters : KeyValueParameters
     {
-        public bool Recurse { get; set; }
-        public long? CheckAndSet { get; set; }
-
-        public override void BuildQuery(Query query)
+        public void Recurse()
         {
-            base.BuildQuery(query);
+            Add("recurse");
+        }
 
-            if (Recurse)
-            {
-                query.Add("recurse");
-            }
-
-            if (CheckAndSet.HasValue)
-            {
-                query.Add("cas", CheckAndSet);
-            }
+        public void CheckAndSet(long index)
+        {
+            Add("cas", index);
         }
     }
 }

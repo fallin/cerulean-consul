@@ -4,18 +4,14 @@ namespace Cerulean.Consul.KeyValueStore
 {
     public sealed class KeyValueGetRawParameters : KeyValueParameters
     {
-        public long? Index { get; set; }
-
-        public override void BuildQuery(Query query)
+        public KeyValueGetRawParameters()
         {
-            base.BuildQuery(query);
+            Add("raw");
+        }
 
-            query.Add("raw");
-
-            if (Index.HasValue)
-            {
-                query.Add("index", Index);
-            }
+        public void Index(long index)
+        {
+            Add("index", index);
         }
     }
 }

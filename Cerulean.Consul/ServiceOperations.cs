@@ -19,34 +19,31 @@ namespace Cerulean.Consul
             get { return _client; }
         }
 
-        protected string ConstructUri<TParameters>(Action<TParameters> parameters, string uri) where TParameters : IQueryBuilder, new()
+        protected string ConstructUri(Parameters parameters, string uri)
         {
             if (uri == null) throw new ArgumentNullException("uri");
 
             uri = Uri.EscapeUriString(uri);
-            AppendQueryParameters(ref uri, CollectParameters(parameters));
+            AppendQueryParameters(ref uri, parameters);
 
             return uri;
         }
 
-        protected string ConstructUri<TParameters>(Action<TParameters> parameters, string uri, params object[] args) where TParameters : IQueryBuilder, new()
+        protected string ConstructUri(Parameters parameters, string uri, params object[] args)
         {
             if (uri == null) throw new ArgumentNullException("uri");
 
             uri = Uri.EscapeUriString(string.Format(uri, args));
-            AppendQueryParameters(ref uri, CollectParameters(parameters));
+            AppendQueryParameters(ref uri, parameters);
 
             return uri;
         }
 
-        protected void AppendQueryParameters(ref string uri, IQueryBuilder queryBuilder)
+        protected void AppendQueryParameters(ref string uri, Parameters parameters)
         {
-            if (queryBuilder != null)
+            if (parameters != null)
             {
-                Query query = new Query();
-                queryBuilder.BuildQuery(query);
-
-                string queryString = query.ToQueryString();
+                string queryString = parameters.ToQueryString();
                 if (!string.IsNullOrEmpty(queryString))
                 {
                     uri += "?" + queryString;
@@ -54,15 +51,13 @@ namespace Cerulean.Consul
             }
         }
 
-        protected T CollectParameters<T>(Action<T> fn) where T : IQueryBuilder, new()
+        protected T ConfigureParameters<T>(Action<T> fn, T parameters) where T : Parameters
         {
-            T options = default(T);
             if (fn != null)
             {
-                options = new T();
-                fn(options);
+                fn(parameters);
             }
-            return options;
+            return parameters;
         }
     }
 }

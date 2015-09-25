@@ -69,11 +69,9 @@
     <Compile Include="Catalog\GetServicesParameters.cs" />
     <Compile Include="Catalog\GetNodesProvidingServiceParameters.cs" />
     <Compile Include="Catalog\ServiceTags.cs" />
-    <Compile Include="KeyValueStore\AcquireLock.cs" />
     <Compile Include="ConsulClient.cs" />
     <Compile Include="ConsulResponse.cs" />
-    <Compile Include="IQueryBuilder.cs" />
-    <Compile Include="JObjectQueryBuilder.cs" />
+    <Compile Include="JObjectParameters.cs" />
     <Compile Include="Catalog\CatalogOperations.cs" />
     <Compile Include="KeyValueStore\KeyValueDelParameters.cs" />
     <Compile Include="KeyValueStore\KeyValueGetKeysParameters.cs" />
@@ -82,10 +80,7 @@
     <Compile Include="KeyValueStore\KeyValueParameters.cs" />
     <Compile Include="KeyValueStore\KeyValuePutParameters.cs" />
     <Compile Include="KeyValueStore\KeyValueResponse.cs" />
-    <Compile Include="KeyValueStore\LockOperation.cs" />
-    <Compile Include="MissingParameters.cs" />
-    <Compile Include="Query.cs" />
-    <Compile Include="KeyValueStore\ReleaseLock.cs" />
+    <Compile Include="Parameters.cs" />
     <Compile Include="ServiceOperations.cs" />
     <Compile Include="WebExtensions\HttpResponseMessageExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -6,21 +6,21 @@ using System.Net;
 
 namespace Cerulean.Consul
 {
-    public class Query : IEnumerable<KeyValuePair<String, object>>
+    public abstract class Parameters : IEnumerable<KeyValuePair<String, object>>
     {
         readonly IDictionary<string, object> _parameters;
 
-        public Query()
+        protected Parameters()
         {
             _parameters = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);;
         }
 
-        public void Add(string name)
+        protected void Add(string name)
         {
             _parameters.Add(name, null);
         }
 
-        public void Add(string name, object value)
+        protected void Add(string name, object value)
         {
             _parameters.Add(name, value);
         }

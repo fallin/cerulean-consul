@@ -2,15 +2,15 @@ using System;
 
 namespace Cerulean.Consul.Catalog
 {
-    public abstract class CatalogParameters : IQueryBuilder
+    public abstract class CatalogParameters : Parameters
     {
         public string DataCenter { get; set; }
 
-        public virtual void BuildQuery(Query query)
+        public void Datacenter(string dc)
         {
             if (!string.IsNullOrEmpty(DataCenter))
             {
-                query.Add("dc", DataCenter);
+                Add("dc", DataCenter);
             }
         }
     }

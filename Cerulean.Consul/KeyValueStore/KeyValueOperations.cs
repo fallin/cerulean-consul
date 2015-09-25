@@ -14,11 +14,12 @@ namespace Cerulean.Consul.KeyValueStore
 
         public Task<KeyValueResponse<KeyValue[]>> GetAllAsync()
         {
-            return GetAsync(string.Empty, opt => opt.Recurse = true);
+            return GetAsync(string.Empty, opt => opt.Recurse());
         }
 
-        public async Task<KeyValueResponse<KeyValue[]>> GetAsync(string key, Action<KeyValueGetParameters> parameters = null)
+        public async Task<KeyValueResponse<KeyValue[]>> GetAsync(string key, Action<KeyValueGetParameters> config = null)
         {
+            var parameters = ConfigureParameters(config, new KeyValueGetParameters());
             string uri = ConstructUri(parameters, "v1/kv/{0}", key);
 
             HttpResponseMessage response = await Client.GetAsync(uri);
@@ -27,8 +28,9 @@ namespace Cerulean.Consul.KeyValueStore
             return reply;
         }
 
-        public async Task<KeyValueResponse<string>> GetRawAsync(string key, Action<KeyValueGetRawParameters> parameters = null)
+        public async Task<KeyValueResponse<string>> GetRawAsync(string key, Action<KeyValueGetRawParameters> config = null)
         {
+            var parameters = ConfigureParameters(config, new KeyValueGetRawParameters());
             string uri = ConstructUri(parameters, "v1/kv/{0}", key);
 
             HttpResponseMessage response = await Client.GetAsync(uri);
@@ -37,8 +39,9 @@ namespace Cerulean.Consul.KeyValueStore
             return reply;
         }
 
-        public async Task<KeyValueResponse<string[]>> GetKeysAsync(string key, Action<KeyValueGetKeysParameters> parameters = null)
+        public async Task<KeyValueResponse<string[]>> GetKeysAsync(string key, Action<KeyValueGetKeysParameters> config = null)
         {
+            var parameters = ConfigureParameters(config, new KeyValueGetKeysParameters());
             string uri = ConstructUri(parameters, "v1/kv/{0}", key);
 
             HttpResponseMessage response = await Client.GetAsync(uri);
@@ -47,15 +50,13 @@ namespace Cerulean.Consul.KeyValueStore
             return reply;
         }
 
-        public async Task<KeyValueResponse<dynamic>> GetDynamicAsync(string key, dynamic parameters = null)
+        public async Task<KeyValueResponse<dynamic>> GetDynamicAsync(string key, dynamic query = null)
         {
             if (key == null) throw new ArgumentNullException("key");
 
-            string uri = Uri.EscapeUriString(String.Format("v1/kv/{0}", key));
-
-            JObject jo = JObject.FromObject(parameters);
-            JObjectQueryBuilder queryBuilder = new JObjectQueryBuilder(jo);
-            AppendQueryParameters(ref uri, queryBuilder);
+            JObject jo = JObject.FromObject(query);
+            var parameters = new JObjectParameters(jo);
+            string uri = ConstructUri(parameters, "v1/kv/{0}", key);
 
             HttpResponseMessage response = await Client.GetAsync(uri);
             dynamic content = await response.ReadContentAsync<dynamic>();
@@ -63,10 +64,11 @@ namespace Cerulean.Consul.KeyValueStore
             return reply;
         }
 
-        public async Task<bool> PutAsync(string key, string value, Action<KeyValuePutParameters> parameters = null)
+        public async Task<bool> PutAsync(string key, string value, Action<KeyValuePutParameters> config = null)
         {
             if (key == null) throw new ArgumentNullException("key");
 
+            var parameters = ConfigureParameters(config, new KeyValuePutParameters());
             string uri = ConstructUri(parameters, "v1/kv/{0}", key);
 
             HttpResponseMessage response = await Client.PutAsync(uri, new StringContent(value));
@@ -74,10 +76,11 @@ namespace Cerulean.Consul.KeyValueStore
             return reply;
         }
 
-        public async Task<bool> DeleteAsync(string key, Action<KeyValueDelParameters> parameters = null)
+        public async Task<bool> DeleteAsync(string key, Action<KeyValueDelParameters> config = null)
         {
             if (key == null) throw new ArgumentNullException("key");
 
+            var parameters = ConfigureParameters(config, new KeyValueDelParameters());
             string uri = ConstructUri(parameters, "v1/kv/{0}", key);
 
             HttpResponseMessage response = await Client.DeleteAsync(uri);

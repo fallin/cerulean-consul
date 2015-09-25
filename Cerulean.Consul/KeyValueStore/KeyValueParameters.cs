@@ -2,15 +2,13 @@
 
 namespace Cerulean.Consul.KeyValueStore
 {
-    public abstract class KeyValueParameters : IQueryBuilder
+    public abstract class KeyValueParameters : Parameters
     {
-        public string DataCenter { get; set; }
-
-        public virtual void BuildQuery(Query query)
+        public void Datacenter(string dc)
         {
-            if (!string.IsNullOrEmpty(DataCenter))
+            if (!string.IsNullOrEmpty(dc))
             {
-                query.Add("dc", DataCenter);
+                Add("dc", dc);
             }
         }
     }

@@ -2,19 +2,19 @@
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Cerulean.Consul.Tests.WebExtensions
+namespace Cerulean.Consul.Tests
 {
     [TestFixture]
-    public class QueryTests
+    public class ParameterTests
     {
         [Test]
         public void ToQueryStringShouldReturnEmptyStringWhenEmptyCollection()
         {
             // Arrange
-            Query query = new Query();
+            Parameters parameters = new TestableParameters();
 
             // Act
-            string queryString = query.ToQueryString();
+            string queryString = parameters.ToQueryString();
 
             // Assert
             queryString.Should().BeEmpty();
@@ -24,13 +24,13 @@ namespace Cerulean.Consul.Tests.WebExtensions
         public void ToQueryStringShouldReturnQueryStringWhenSingleValueCollection()
         {
             // Arrange
-            Query query = new Query
+            Parameters parameters = new TestableParameters
             {
                 {"flags", 42}
             };
 
             // Act
-            string queryString = query.ToQueryString();
+            string queryString = parameters.ToQueryString();
 
             // Assert
             queryString.Should().Be("flags=42");
@@ -40,14 +40,14 @@ namespace Cerulean.Consul.Tests.WebExtensions
         public void ToQueryStringShouldReturnConcatenatedValuesWhenMultipleValueCollection()
         {
             // Arrange
-            Query query = new Query
+            Parameters parameters = new TestableParameters
             {
                 {"flags", 42},
                 {"foo", "bar"}
             };
 
             // Act
-            string queryString = query.ToQueryString();
+            string queryString = parameters.ToQueryString();
 
             // Assert
             queryString.Should().Be("flags=42&foo=bar");
@@ -57,13 +57,13 @@ namespace Cerulean.Consul.Tests.WebExtensions
         public void ToQueryStringShouldReturnUnaryValueWhenNameHasEmptyValue()
         {
             // Arrange
-            Query query = new Query
+            Parameters parameters = new TestableParameters
             {
                 {"recurse", ""}
             };
 
             // Act
-            string queryString = query.ToQueryString();
+            string queryString = parameters.ToQueryString();
 
             // Assert
             queryString.Should().Be("recurse");
@@ -73,13 +73,13 @@ namespace Cerulean.Consul.Tests.WebExtensions
         public void ToQueryStringShouldReturnUnaryValueWhenNameHasNullValue()
         {
             // Arrange
-            Query query = new Query
+            Parameters parameters = new TestableParameters
             {
                 {"recurse", null}
             };
 
             // Act
-            string queryString = query.ToQueryString();
+            string queryString = parameters.ToQueryString();
 
             // Assert
             queryString.Should().Be("recurse");
@@ -89,14 +89,14 @@ namespace Cerulean.Consul.Tests.WebExtensions
         public void ToQueryStringShouldIgnoreEmptyNames()
         {
             // Arrange
-            Query query = new Query
+            Parameters parameters = new TestableParameters
             {
                 {"flags", 42},
                 {"", "a"}
             };
 
             // Act
-            string queryString = query.ToQueryString();
+            string queryString = parameters.ToQueryString();
 
             // Assert
             queryString.Should().Be("flags=42");
@@ -106,14 +106,14 @@ namespace Cerulean.Consul.Tests.WebExtensions
         public void ToQueryStringShouldIgnoreNullNames()
         {
             // Arrange
-            Query query = new Query
+            Parameters parameters = new TestableParameters
             {
                 {"flags", 42},
                 {null, "a"}
             };
 
             // Act
-            string queryString = query.ToQueryString();
+            string queryString = parameters.ToQueryString();
 
             // Assert
             queryString.Should().Be("flags=42");

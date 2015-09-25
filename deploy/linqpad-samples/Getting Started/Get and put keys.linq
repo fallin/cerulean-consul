@@ -22,7 +22,7 @@ static async Task MainAsync()
         updated = await client.KeyValue.PutAsync("web/key1", "test");
         Console.WriteLine("key updated: {0}", updated);
     
-        updated = await client.KeyValue.PutAsync("web/key2", "test", p => p.Flags = 42);
+        updated = await client.KeyValue.PutAsync("web/key2", "test", p => p.Flags(42));
         Console.WriteLine("key updated: {0}", updated);
     
         updated = await client.KeyValue.PutAsync("web/sub/key3", "test");
@@ -33,10 +33,10 @@ static async Task MainAsync()
         KeyValueResponse<KeyValue[]> response = await client.KeyValue.GetAsync("web/key1");
         long index = response.Index;
         
-        updated = await client.KeyValue.PutAsync("web/key1", "hello", p => p.CheckAndSet = index);
+        updated = await client.KeyValue.PutAsync("web/key1", "hello", p => p.CheckAndSet(index));
         Console.WriteLine("key updated: {0} with modify-index: {1}", updated, index);
         
-        updated = await client.KeyValue.PutAsync("web/key1", "hello", p => p.CheckAndSet = index);
+        updated = await client.KeyValue.PutAsync("web/key1", "hello", p => p.CheckAndSet(index));
         Console.WriteLine("key updated: {0} with modify-index: {1}", updated, index);
     }
 }
