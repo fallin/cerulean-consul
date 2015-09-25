@@ -28,14 +28,15 @@ namespace Cerulean.Consul.KeyValueStore
             return reply;
         }
 
-        public async Task<KeyValueResponse<string>> GetRawAsync(string key, Action<KeyValueGetRawParameters> config = null)
+        // NOTE: returns string or string[] when recurse is set
+        public async Task<KeyValueResponse<dynamic>> GetRawAsync(string key, Action<KeyValueGetRawParameters> config = null)
         {
             var parameters = ConfigureParameters(config, new KeyValueGetRawParameters());
             string uri = ConstructUri(parameters, "v1/kv/{0}", key);
 
             HttpResponseMessage response = await Client.GetAsync(uri);
-            var content = await response.ReadContentAsync<string>();
-            var reply = new KeyValueResponse<string>(response, content);
+            var content = await response.ReadContentAsync<dynamic>();
+            var reply = new KeyValueResponse<dynamic>(response, content);
             return reply;
         }
 
@@ -50,7 +51,8 @@ namespace Cerulean.Consul.KeyValueStore
             return reply;
         }
 
-        public async Task<KeyValueResponse<dynamic>> GetDynamicAsync(string key, dynamic query = null)
+        // TODO: is this worth keeping?
+        internal async Task<KeyValueResponse<dynamic>> GetDynamicAsync(string key, dynamic query = null)
         {
             if (key == null) throw new ArgumentNullException("key");
 

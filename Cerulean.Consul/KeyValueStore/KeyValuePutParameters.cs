@@ -2,7 +2,7 @@
 
 namespace Cerulean.Consul.KeyValueStore
 {
-    public sealed class KeyValuePutParameters : KeyValueParameters
+    public class KeyValuePutParameters : KeyValueParameters
     {
         public void Flags(long flags)
         {

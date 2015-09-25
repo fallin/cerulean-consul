@@ -2,16 +2,11 @@
 
 namespace Cerulean.Consul.KeyValueStore
 {
-    public sealed class KeyValueGetRawParameters : KeyValueParameters
+    public class KeyValueGetRawParameters : KeyValueGetParameters
     {
         public KeyValueGetRawParameters()
         {
             Add("raw");
-        }
-
-        public void Index(long index)
-        {
-            Add("index", index);
         }
     }
 }

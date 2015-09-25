@@ -2,7 +2,7 @@
 
 namespace Cerulean.Consul.KeyValueStore
 {
-    public sealed class KeyValueGetParameters : KeyValueParameters
+    public class KeyValueGetParameters : KeyValueParameters
     {
         public void Recurse()
         {
