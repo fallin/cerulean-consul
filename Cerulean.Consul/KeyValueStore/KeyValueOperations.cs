@@ -8,8 +8,10 @@ namespace Cerulean.Consul.KeyValueStore
 {
     public class KeyValueOperations : ServiceOperations
     {
-        internal KeyValueOperations(HttpClient client) : base(client)
+        internal KeyValueOperations(HttpClient client, GlobalParameters globals)
+            : base(client, globals)
         {
+            UseGlobalParameters("dc", "token");
         }
 
         public Task<KeyValueResponse<KeyValue[]>> GetAllAsync()

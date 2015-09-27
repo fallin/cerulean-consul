@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 
 namespace Cerulean.Consul
@@ -6,12 +8,23 @@ namespace Cerulean.Consul
     public abstract class ServiceOperations
     {
         readonly HttpClient _client;
+        readonly GlobalParameters _globals;
+        readonly HashSet<string> _applicableGlobals = new HashSet<string>(StringComparer.OrdinalIgnoreCase); 
 
-        protected ServiceOperations(HttpClient client)
+        protected ServiceOperations(HttpClient client, GlobalParameters globals)
         {
             if (client == null) throw new ArgumentNullException("client");
 
             _client = client;
+            _globals = globals ?? new GlobalParameters();
+        }
+
+        protected void UseGlobalParameters(params string[] globals)
+        {
+            foreach (string global in globals)
+            {
+                _applicableGlobals.Add(global);
+            }
         }
 
         protected HttpClient Client
@@ -57,7 +70,29 @@ namespace Cerulean.Consul
             {
                 fn(parameters);
             }
+
+            // Parameters provided by the callback function (fn) should always take
+            // precedence over global parameters. Also, not all global parameters
+            // apply to all endpoints. Therefore, we should only provide global
+            // parameters if (1) they are applicable to the endpoint and (2) they
+            // are missing from the caller-specified parameter list.
+            ConfigureGlobalParameters(parameters);
+
             return parameters;
+        }
+
+        void ConfigureGlobalParameters<T>(T parameters) where T : Parameters
+        {
+            IEnumerable<KeyValuePair<string, object>> globals = _globals
+                .Where(pair => _applicableGlobals.Contains(pair.Key))
+                .ToArray();
+            if (globals.Any())
+            {
+                foreach (KeyValuePair<string, object> global in globals.Where(g => parameters.Missing(g.Key)))
+                {
+                    parameters.Add(global.Key, global.Value);
+                }
+            }
         }
     }
 }

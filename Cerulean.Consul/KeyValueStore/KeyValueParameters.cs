@@ -11,5 +11,10 @@ namespace Cerulean.Consul.KeyValueStore
                 Add("dc", dc);
             }
         }
+
+        public void AclToken(Guid token)
+        {
+            Add("token", token.ToString("D"));
+        }
     }
 }

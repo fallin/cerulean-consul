@@ -23,7 +23,7 @@ namespace Cerulean.Consul.Tests
             var handler = new Mock<HttpMessageHandler>()
                 .WithResponse(HttpStatusCode.NotFound, "");
             HttpClient client = new HttpClient(handler.Object) {BaseAddress = new Uri("http://localhost/")};
-            var ops = new KeyValueOperations(client);
+            var ops = new KeyValueOperations(client, null);
 
             // Act
             var response = await ops.GetAllAsync();
@@ -42,7 +42,7 @@ namespace Cerulean.Consul.Tests
             var handler = new Mock<HttpMessageHandler>()
                 .WithResponse(HttpStatusCode.OK, json);
             HttpClient client = new HttpClient(handler.Object) { BaseAddress = new Uri("http://localhost/") };
-            var ops = new KeyValueOperations(client);
+            var ops = new KeyValueOperations(client, null);
 
             // Act
             var response = await ops.GetAllAsync();
@@ -59,7 +59,7 @@ namespace Cerulean.Consul.Tests
             var handler = new Mock<HttpMessageHandler>()
                 .WithResponse(HttpStatusCode.NotFound, "");
             HttpClient client = new HttpClient(handler.Object) { BaseAddress = new Uri("http://localhost/") };
-            var ops = new KeyValueOperations(client);
+            var ops = new KeyValueOperations(client, null);
 
             // Act
             var response = await ops.GetAsync("does-not-exist");
@@ -78,7 +78,7 @@ namespace Cerulean.Consul.Tests
             var handler = new Mock<HttpMessageHandler>()
                 .WithResponse(HttpStatusCode.OK, json);
             HttpClient client = new HttpClient(handler.Object) { BaseAddress = new Uri("http://localhost/") };
-            var ops = new KeyValueOperations(client);
+            var ops = new KeyValueOperations(client, null);
 
             // Act
             var response = await ops.GetAllAsync();

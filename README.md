@@ -34,7 +34,7 @@ using (var client = new ConsulClient())
     result = await client.KeyValue.PutAsync("web/key1", "test");
     Console.WriteLine(result);
     
-    result = await client.KeyValue.PutAsync("web/key2", "test", o => o.Flags = 42);
+    result = await client.KeyValue.PutAsync("web/key2", "test", o => o.Flags(42));
     Console.WriteLine(result);
     
     result = await client.KeyValue.PutAsync("web/sub/key3", "test");
@@ -47,7 +47,7 @@ Read the "key1" key:
 ```csharp
 using (var client = new ConsulClient())
 {
-    var response = await client.KeyValue.GetAsync("web/sub", o => o.Recurse = true);
+    var response = await client.KeyValue.GetAsync("web/sub", o => o.Recurse());
     Console.WriteLine(JsonConvert.SerializeObject(response.Content));
 }
 ```
@@ -61,13 +61,13 @@ using (var client = new ConsulClient())
 
     bool success1 = await client.KeyValue.PutAsync("web/key1", "newval", o =>
     {
-        o.CheckAndSet = cas;
+        o.CheckAndSet(cas);
     });
     Console.WriteLine(success1);
     
     bool success2 = await client.KeyValue.PutAsync("web/key1", "newval", o =>
     {
-        o.CheckAndSet = cas;
+        o.CheckAndSet(cas);
     });
     Console.WriteLine(success2);
 }

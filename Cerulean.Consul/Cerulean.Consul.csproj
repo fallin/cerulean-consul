@@ -71,6 +71,7 @@
     <Compile Include="Catalog\ServiceTags.cs" />
     <Compile Include="ConsulClient.cs" />
     <Compile Include="ConsulResponse.cs" />
+    <Compile Include="GlobalParameters.cs" />
     <Compile Include="JObjectParameters.cs" />
     <Compile Include="Catalog\CatalogOperations.cs" />
     <Compile Include="KeyValueStore\KeyValueDelParameters.cs" />

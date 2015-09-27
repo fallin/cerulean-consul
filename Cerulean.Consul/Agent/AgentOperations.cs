@@ -9,7 +9,8 @@ namespace Cerulean.Consul.Agent
 {
     public class AgentOperations : ServiceOperations
     {
-        internal AgentOperations(HttpClient client) : base(client)
+        internal AgentOperations(HttpClient client, GlobalParameters globals)
+            : base(client, globals)
         {
         }
 

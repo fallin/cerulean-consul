@@ -6,7 +6,7 @@ using System.Net;
 
 namespace Cerulean.Consul
 {
-    public abstract class Parameters : IEnumerable<KeyValuePair<String, object>>
+    public abstract class Parameters : IEnumerable<KeyValuePair<string, object>>
     {
         readonly IDictionary<string, object> _parameters;
 
@@ -15,15 +15,36 @@ namespace Cerulean.Consul
             _parameters = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);;
         }
 
-        protected void Add(string name)
+        public void Add(string name)
         {
             _parameters.Add(name, null);
         }
 
-        protected void Add(string name, object value)
+        public void Add(string name, object value)
         {
             _parameters.Add(name, value);
         }
+
+        public bool Contains(string name)
+        {
+            return _parameters.ContainsKey(name);
+        }
+
+        public bool Missing(string name)
+        {
+            return !_parameters.ContainsKey(name);
+        }
+
+        //public void Clear()
+        //{
+        //    _parameters.Clear();
+        //}
+
+        //public object this[string name]
+        //{
+        //    get { return _parameters[name]; }
+        //    set { _parameters[name] = value; }
+        //}
 
         public string ToQueryString()
         {
