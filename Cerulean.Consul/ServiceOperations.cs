@@ -88,11 +88,16 @@ namespace Cerulean.Consul
                 .ToArray();
             if (globals.Any())
             {
-                foreach (KeyValuePair<string, object> global in globals.Where(g => parameters.Missing(g.Key)))
+                foreach (KeyValuePair<string, object> global in globals.Where(g => parameters.IsMissing(g.Key)))
                 {
                     parameters.Add(global.Key, global.Value);
                 }
             }
+        }
+
+        protected HttpContent EmptyContent()
+        {
+            return new StringContent(string.Empty);
         }
     }
 }

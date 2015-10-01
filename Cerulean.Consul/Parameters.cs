@@ -30,7 +30,7 @@ namespace Cerulean.Consul
             return _parameters.ContainsKey(name);
         }
 
-        public bool Missing(string name)
+        public bool IsMissing(string name)
         {
             return !_parameters.ContainsKey(name);
         }

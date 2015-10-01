@@ -9,5 +9,6 @@ namespace Cerulean.Consul.Agent
         public string Http { get; set; }
 
         public string Interval { get; set; }
+        public string Timeout { get; set; }
     }
 }

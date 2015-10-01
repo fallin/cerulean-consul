@@ -64,35 +64,37 @@ namespace Cerulean.Consul.Agent
             return reply;
         }
 
-        public async Task AgentMaintenance(bool enable, Action<MaintenanceParameters> config = null)
+        public async Task MaintenanceAsync(bool enable, Action<MaintenanceParameters> config = null)
         {
             var parameters = ConfigureParameters(config, new MaintenanceParameters());
             parameters.Add("enable", enable);
 
             string uri = ConstructUri(parameters, "v1/agent/maintenance");
 
-            HttpResponseMessage response = await Client.GetAsync(uri);
+            // Supports PUT
+            HttpResponseMessage response = await Client.PutAsync(uri, EmptyContent());
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task Join(string address, Action<AgentJoinParameters> config = null)
+        public async Task JoinAsync(string address, Action<AgentJoinParameters> config = null)
         {
             var parameters = ConfigureParameters(config, new AgentJoinParameters());
             string uri = ConstructUri(parameters, "v1/agent/join/{0}", address);
 
-            HttpResponseMessage response = await Client.GetAsync(uri);
+            // Supports GET, PUT, POST
+            HttpResponseMessage response = await Client.PostAsync(uri, EmptyContent());
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task ForceLeave(string node)
+        public async Task ForceLeaveAsync(string node)
         {
             string uri = ConstructUri(null, "v1/agent/force-leave/{0}", node);
 
-            HttpResponseMessage response = await Client.GetAsync(uri);
+            HttpResponseMessage response = await Client.PostAsync(uri, EmptyContent());
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task RegisterCheck(CheckRegistrar check, Action<AgentRegisterCheckParameters> config = null)
+        public async Task RegisterCheckAsync(CheckRegistrar check, Action<AgentRegisterCheckParameters> config = null)
         {
             var parameters = ConfigureParameters(config, new AgentRegisterCheckParameters());
             string uri = ConstructUri(parameters, "v1/agent/check/register");
@@ -102,42 +104,42 @@ namespace Cerulean.Consul.Agent
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task DeregisterCheck(string checkID)
+        public async Task DeregisterCheckAsync(string checkID)
         {
             string uri = ConstructUri(null, "v1/agent/check/deregister/{0}", checkID);
 
-            HttpResponseMessage response = await Client.GetAsync(uri);
+            HttpResponseMessage response = await Client.DeleteAsync(uri);
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task TtlCheckPass(string checkID, Action<AgentTtlCheckParameters> config = null)
+        public async Task TtlCheckPassAsync(string checkID, Action<AgentTtlCheckParameters> config = null)
         {
             var parameters = ConfigureParameters(config, new AgentTtlCheckParameters());
             string uri = ConstructUri(parameters, "v1/agent/check/pass/{0}", checkID);
 
-            HttpResponseMessage response = await Client.GetAsync(uri);
+            HttpResponseMessage response = await Client.PutAsync(uri, EmptyContent());
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task TtlCheckWarn(string checkID, Action<AgentTtlCheckParameters> config = null)
+        public async Task TtlCheckWarnAsync(string checkID, Action<AgentTtlCheckParameters> config = null)
         {
             var parameters = ConfigureParameters(config, new AgentTtlCheckParameters());
             string uri = ConstructUri(parameters, "v1/agent/check/warn/{0}", checkID);
 
-            HttpResponseMessage response = await Client.GetAsync(uri);
+            HttpResponseMessage response = await Client.PutAsync(uri, EmptyContent());
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task TtlCheckFail(string checkID, Action<AgentTtlCheckParameters> config = null)
+        public async Task TtlCheckFailAsync(string checkID, Action<AgentTtlCheckParameters> config = null)
         {
             var parameters = ConfigureParameters(config, new AgentTtlCheckParameters());
             string uri = ConstructUri(parameters, "v1/agent/check/fail/{0}", checkID);
 
-            HttpResponseMessage response = await Client.GetAsync(uri);
+            HttpResponseMessage response = await Client.PutAsync(uri, EmptyContent());
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task RegisterService(ServiceRegistrar service, Action<RegisterServiceParameters> config = null)
+        public async Task RegisterServiceAsync(ServiceRegistrar service, Action<RegisterServiceParameters> config = null)
         {
             var parameters = ConfigureParameters(config, new RegisterServiceParameters());
             string uri = ConstructUri(parameters, "v1/agent/service/register");
@@ -147,22 +149,22 @@ namespace Cerulean.Consul.Agent
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task DeregisterService(string serviceID)
+        public async Task DeregisterServiceAsync(string serviceID)
         {
             string uri = ConstructUri(null, "v1/agent/service/deregister/{0}", serviceID);
 
-            HttpResponseMessage response = await Client.GetAsync(uri);
+            HttpResponseMessage response = await Client.DeleteAsync(uri);
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task ServiceMaintenance(string serviceID, bool enable, Action<MaintenanceParameters> config = null)
+        public async Task ServiceMaintenanceAsync(string serviceID, bool enable, Action<MaintenanceParameters> config = null)
         {
             var parameters = ConfigureParameters(config, new MaintenanceParameters());
             parameters.Add("enable", enable);
 
             string uri = ConstructUri(parameters, "v1/agent/service/maintenance/{0}", serviceID);
 
-            HttpResponseMessage response = await Client.GetAsync(uri);
+            HttpResponseMessage response = await Client.PutAsync(uri, EmptyContent());
             response.EnsureSuccessStatusCode();
         }
     }
