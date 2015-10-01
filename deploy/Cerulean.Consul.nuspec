@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
         <id>Cerulean.Consul</id>
-        <version>0.3.0-rc02</version>
+        <version>0.3.0-rc03</version>
         <title>Cerulean Consul API</title>
         <authors>Brant Fallin</authors>
         <owners>fallin</owners>
@@ -19,6 +19,6 @@
     </metadata>
     <files>
         <file src="..\Cerulean.Consul\bin\Release\Cerulean.Consul.dll" target="lib\net451\Cerulean.Consul.dll" />
-        <file src="linqpad-samples\Getting Started\Get and put keys.linq" target="linqpad-samples\Getting Started\Get and put keys.linq" />
+        <file src="linqpad-samples\Getting Started\*.linq" target="linqpad-samples\Getting Started" />
     </files>
 </package>
