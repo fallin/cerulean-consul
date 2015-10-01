@@ -6,11 +6,11 @@ using System.Net;
 
 namespace Cerulean.Consul
 {
-    public abstract class Parameters : IEnumerable<KeyValuePair<string, object>>
+    public class Parameters : IEnumerable<KeyValuePair<string, object>>
     {
         readonly IDictionary<string, object> _parameters;
 
-        protected Parameters()
+        public Parameters()
         {
             _parameters = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);;
         }
@@ -28,11 +28,6 @@ namespace Cerulean.Consul
         public bool Contains(string name)
         {
             return _parameters.ContainsKey(name);
-        }
-
-        public bool IsMissing(string name)
-        {
-            return !_parameters.ContainsKey(name);
         }
 
         //public void Clear()

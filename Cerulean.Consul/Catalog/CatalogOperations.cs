@@ -30,7 +30,7 @@ namespace Cerulean.Consul.Catalog
         /// </summary>
         public async Task<NodeDescriptor[]> GetNodesAsync(Action<GetNodesParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, new GetNodesParameters());
+            var parameters = ConfigureParameters(config);
             string uri = ConstructUri(parameters, "v1/catalog/nodes");
 
             HttpResponseMessage response = await Client.GetAsync(uri);
@@ -43,7 +43,7 @@ namespace Cerulean.Consul.Catalog
         /// </summary>
         public async Task<IDictionary<string, ServiceTags>> GetServicesAsync(Action<GetServicesParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, new GetServicesParameters());
+            var parameters = ConfigureParameters(config);
             string uri = ConstructUri(parameters, "v1/catalog/services");
 
             HttpResponseMessage response = await Client.GetAsync(uri);
@@ -56,7 +56,7 @@ namespace Cerulean.Consul.Catalog
         /// </summary>
         public async Task<ServiceNode[]> GetNodesProvidingServiceAsync(string service, Action<GetNodesProvidingServiceParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, new GetNodesProvidingServiceParameters());
+            var parameters = ConfigureParameters(config);
             string uri = ConstructUri(parameters, "v1/catalog/service/{0}", service);
 
             HttpResponseMessage response = await Client.GetAsync(uri);
@@ -69,7 +69,7 @@ namespace Cerulean.Consul.Catalog
         /// </summary>
         public async Task<NodeServices> GetNodeServicesAsync(string node, Action<GetNodeServicesParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, new GetNodeServicesParameters());
+            var parameters = ConfigureParameters(config);
             string uri = ConstructUri(parameters, "v1/catalog/node/{0}", node);
 
             HttpResponseMessage response = await Client.GetAsync(uri);

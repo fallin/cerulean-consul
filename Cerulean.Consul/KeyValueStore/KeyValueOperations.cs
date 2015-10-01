@@ -1,17 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Cerulean.Consul.WebExtensions;
-using Newtonsoft.Json.Linq;
 
 namespace Cerulean.Consul.KeyValueStore
 {
     public class KeyValueOperations : ServiceOperations
     {
+        readonly HashSet<string> _useGlobals; 
+
         internal KeyValueOperations(HttpClient client, GlobalParameters globals)
             : base(client, globals)
         {
-            UseGlobalParameters("dc", "token");
+            _useGlobals = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "dc", "token" };
         }
 
         public Task<KeyValueResponse<KeyValue[]>> GetAllAsync()
@@ -21,7 +23,7 @@ namespace Cerulean.Consul.KeyValueStore
 
         public async Task<KeyValueResponse<KeyValue[]>> GetAsync(string key, Action<KeyValueGetParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, new KeyValueGetParameters());
+            var parameters = ConfigureParameters(config, _useGlobals);
             string uri = ConstructUri(parameters, "v1/kv/{0}", key);
 
             HttpResponseMessage response = await Client.GetAsync(uri);
@@ -33,7 +35,7 @@ namespace Cerulean.Consul.KeyValueStore
         // NOTE: returns string or string[] when recurse is set
         public async Task<KeyValueResponse<dynamic>> GetRawAsync(string key, Action<KeyValueGetRawParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, new KeyValueGetRawParameters());
+            var parameters = ConfigureParameters(config, _useGlobals);
             string uri = ConstructUri(parameters, "v1/kv/{0}", key);
 
             HttpResponseMessage response = await Client.GetAsync(uri);
@@ -44,7 +46,7 @@ namespace Cerulean.Consul.KeyValueStore
 
         public async Task<KeyValueResponse<string[]>> GetKeysAsync(string key, Action<KeyValueGetKeysParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, new KeyValueGetKeysParameters());
+            var parameters = ConfigureParameters(config, _useGlobals);
             string uri = ConstructUri(parameters, "v1/kv/{0}", key);
 
             HttpResponseMessage response = await Client.GetAsync(uri);
@@ -62,7 +64,7 @@ namespace Cerulean.Consul.KeyValueStore
 
             if (key == null) throw new ArgumentNullException("key");
 
-            var parameters = ConfigureParameters(config, new JObjectParameters(null));
+            var parameters = ConfigureParameters(config, _useGlobals);
             string uri = ConstructUri(parameters, "v1/kv/{0}", key);
 
             HttpResponseMessage response = await Client.GetAsync(uri);
@@ -75,7 +77,7 @@ namespace Cerulean.Consul.KeyValueStore
         {
             if (key == null) throw new ArgumentNullException("key");
 
-            var parameters = ConfigureParameters(config, new KeyValuePutParameters());
+            var parameters = ConfigureParameters(config, _useGlobals);
             string uri = ConstructUri(parameters, "v1/kv/{0}", key);
 
             HttpResponseMessage response = await Client.PutAsync(uri, new StringContent(value));
@@ -87,7 +89,7 @@ namespace Cerulean.Consul.KeyValueStore
         {
             if (key == null) throw new ArgumentNullException("key");
 
-            var parameters = ConfigureParameters(config, new KeyValueDelParameters());
+            var parameters = ConfigureParameters(config, _useGlobals);
             string uri = ConstructUri(parameters, "v1/kv/{0}", key);
 
             HttpResponseMessage response = await Client.DeleteAsync(uri);

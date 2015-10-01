@@ -9,7 +9,6 @@ namespace Cerulean.Consul
     {
         readonly HttpClient _client;
         readonly GlobalParameters _globals;
-        readonly HashSet<string> _applicableGlobals = new HashSet<string>(StringComparer.OrdinalIgnoreCase); 
 
         protected ServiceOperations(HttpClient client, GlobalParameters globals)
         {
@@ -19,17 +18,14 @@ namespace Cerulean.Consul
             _globals = globals ?? new GlobalParameters();
         }
 
-        protected void UseGlobalParameters(params string[] globals)
-        {
-            foreach (string global in globals)
-            {
-                _applicableGlobals.Add(global);
-            }
-        }
-
         protected HttpClient Client
         {
             get { return _client; }
+        }
+
+        protected HttpContent EmptyContent()
+        {
+            return new StringContent(string.Empty);
         }
 
         protected string ConstructUri(Parameters parameters, string uri)
@@ -52,7 +48,28 @@ namespace Cerulean.Consul
             return uri;
         }
 
-        protected void AppendQueryParameters(ref string uri, Parameters parameters)
+        protected T ConfigureParameters<T>(Action<T> fn, params string[] useGlobals) where T : Parameters, new()
+        {
+            HashSet<string> collection = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            collection.UnionWith(useGlobals);
+
+            return ConfigureParameters(fn, collection);
+        }
+
+        protected T ConfigureParameters<T>(Action<T> fn, HashSet<string> useGlobals) where T : Parameters, new()
+        {
+            T parameters = new T();
+
+            InitializeWithGlobals(parameters, useGlobals);
+            if (fn != null)
+            {
+                fn(parameters);
+            }
+
+            return parameters;
+        }
+
+        void AppendQueryParameters(ref string uri, Parameters parameters)
         {
             if (parameters != null)
             {
@@ -64,40 +81,23 @@ namespace Cerulean.Consul
             }
         }
 
-        protected T ConfigureParameters<T>(Action<T> fn, T parameters) where T : Parameters
+        void InitializeWithGlobals(Parameters parameters, HashSet<string> useGlobals)
         {
-            if (fn != null)
+            if (parameters == null) throw new ArgumentNullException("parameters");
+
+            if (useGlobals != null && useGlobals.Any())
             {
-                fn(parameters);
-            }
-
-            // Parameters provided by the callback function (fn) should always take
-            // precedence over global parameters. Also, not all global parameters
-            // apply to all endpoints. Therefore, we should only provide global
-            // parameters if (1) they are applicable to the endpoint and (2) they
-            // are missing from the caller-specified parameter list.
-            ConfigureGlobalParameters(parameters);
-
-            return parameters;
-        }
-
-        void ConfigureGlobalParameters<T>(T parameters) where T : Parameters
-        {
-            IEnumerable<KeyValuePair<string, object>> globals = _globals
-                .Where(pair => _applicableGlobals.Contains(pair.Key))
-                .ToArray();
-            if (globals.Any())
-            {
-                foreach (KeyValuePair<string, object> global in globals.Where(g => parameters.IsMissing(g.Key)))
+                IEnumerable<KeyValuePair<string, object>> overrides = _globals
+                    .Where(pair => useGlobals.Contains(pair.Key))
+                    .ToArray();
+                if (overrides.Any())
                 {
-                    parameters.Add(global.Key, global.Value);
+                    foreach (KeyValuePair<string, object> @override in overrides)
+                    {
+                        parameters.Add(@override.Key, @override.Value);
+                    }
                 }
             }
-        }
-
-        protected HttpContent EmptyContent()
-        {
-            return new StringContent(string.Empty);
         }
     }
 }

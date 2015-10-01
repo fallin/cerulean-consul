@@ -44,7 +44,7 @@ namespace Cerulean.Consul.Agent
         /// </summary>
         public async Task<AgentMember[]> GetMembersAsync(Action<AgentMembersParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, new AgentMembersParameters());
+            var parameters = ConfigureParameters(config);
             string uri = ConstructUri(parameters, "v1/agent/members");
 
             HttpResponseMessage response = await Client.GetAsync(uri);
@@ -66,7 +66,7 @@ namespace Cerulean.Consul.Agent
 
         public async Task MaintenanceAsync(bool enable, Action<MaintenanceParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, new MaintenanceParameters());
+            var parameters = ConfigureParameters(config);
             parameters.Add("enable", enable);
 
             string uri = ConstructUri(parameters, "v1/agent/maintenance");
@@ -78,7 +78,7 @@ namespace Cerulean.Consul.Agent
 
         public async Task JoinAsync(string address, Action<AgentJoinParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, new AgentJoinParameters());
+            var parameters = ConfigureParameters(config);
             string uri = ConstructUri(parameters, "v1/agent/join/{0}", address);
 
             // Supports GET, PUT, POST
@@ -96,7 +96,7 @@ namespace Cerulean.Consul.Agent
 
         public async Task RegisterCheckAsync(CheckRegistrar check, Action<AgentRegisterCheckParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, new AgentRegisterCheckParameters());
+            var parameters = ConfigureParameters(config, "token");
             string uri = ConstructUri(parameters, "v1/agent/check/register");
 
             HttpContent content = new StringContent(JsonConvert.SerializeObject(check, Formatting.None));
@@ -114,7 +114,7 @@ namespace Cerulean.Consul.Agent
 
         public async Task TtlCheckPassAsync(string checkID, Action<AgentTtlCheckParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, new AgentTtlCheckParameters());
+            var parameters = ConfigureParameters(config);
             string uri = ConstructUri(parameters, "v1/agent/check/pass/{0}", checkID);
 
             HttpResponseMessage response = await Client.PutAsync(uri, EmptyContent());
@@ -123,7 +123,7 @@ namespace Cerulean.Consul.Agent
 
         public async Task TtlCheckWarnAsync(string checkID, Action<AgentTtlCheckParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, new AgentTtlCheckParameters());
+            var parameters = ConfigureParameters(config);
             string uri = ConstructUri(parameters, "v1/agent/check/warn/{0}", checkID);
 
             HttpResponseMessage response = await Client.PutAsync(uri, EmptyContent());
@@ -132,7 +132,7 @@ namespace Cerulean.Consul.Agent
 
         public async Task TtlCheckFailAsync(string checkID, Action<AgentTtlCheckParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, new AgentTtlCheckParameters());
+            var parameters = ConfigureParameters(config);
             string uri = ConstructUri(parameters, "v1/agent/check/fail/{0}", checkID);
 
             HttpResponseMessage response = await Client.PutAsync(uri, EmptyContent());
@@ -141,7 +141,7 @@ namespace Cerulean.Consul.Agent
 
         public async Task RegisterServiceAsync(ServiceRegistrar service, Action<RegisterServiceParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, new RegisterServiceParameters());
+            var parameters = ConfigureParameters(config, "token");
             string uri = ConstructUri(parameters, "v1/agent/service/register");
 
             HttpContent content = new StringContent(JsonConvert.SerializeObject(service, Formatting.None));
@@ -159,7 +159,7 @@ namespace Cerulean.Consul.Agent
 
         public async Task ServiceMaintenanceAsync(string serviceID, bool enable, Action<MaintenanceParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, new MaintenanceParameters());
+            var parameters = ConfigureParameters(config);
             parameters.Add("enable", enable);
 
             string uri = ConstructUri(parameters, "v1/agent/service/maintenance/{0}", serviceID);
