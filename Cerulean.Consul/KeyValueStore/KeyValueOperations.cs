@@ -53,13 +53,16 @@ namespace Cerulean.Consul.KeyValueStore
             return reply;
         }
 
-        // TODO: is this worth keeping?
-        internal async Task<KeyValueResponse<dynamic>> GetDynamicAsync(string key, dynamic query = null)
+        internal async Task<KeyValueResponse<dynamic>> GetDynamicAsync(string key, Action<Parameters> config = null)
         {
+            // The method signature changed. The dynamic 'query' parameter has been replaced by Action<Parameters>
+            // because the Parameter class is flexible enough to allow any query parameters (by calling the Add(_)
+            // or Add(_,_) methods). This method isn't really as useful as it used to be since it's functionally
+            // equivalent to GetRawAsync.
+
             if (key == null) throw new ArgumentNullException("key");
 
-            JObject jo = JObject.FromObject(query);
-            var parameters = new JObjectParameters(jo);
+            var parameters = ConfigureParameters(config, new JObjectParameters(null));
             string uri = ConstructUri(parameters, "v1/kv/{0}", key);
 
             HttpResponseMessage response = await Client.GetAsync(uri);
