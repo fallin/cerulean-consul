@@ -2,20 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 
 namespace Cerulean.Consul
 {
     public abstract class ServiceOperations
     {
         readonly HttpClient _client;
-        readonly GlobalParameters _globals;
+        readonly DefaultParameters _defaults;
 
-        protected ServiceOperations(HttpClient client, GlobalParameters globals)
+        protected ServiceOperations(HttpClient client, DefaultParameters defaults)
         {
             if (client == null) throw new ArgumentNullException("client");
 
             _client = client;
-            _globals = globals ?? new GlobalParameters();
+            _defaults = defaults ?? new DefaultParameters();
         }
 
         protected HttpClient Client
@@ -48,19 +49,11 @@ namespace Cerulean.Consul
             return uri;
         }
 
-        protected T ConfigureParameters<T>(Action<T> fn, params string[] useGlobals) where T : Parameters, new()
-        {
-            HashSet<string> collection = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            collection.UnionWith(useGlobals);
-
-            return ConfigureParameters(fn, collection);
-        }
-
-        protected T ConfigureParameters<T>(Action<T> fn, HashSet<string> useGlobals) where T : Parameters, new()
+        protected T ConfigureParameters<T>(Action<T> fn) where T : Parameters, new()
         {
             T parameters = new T();
 
-            InitializeWithGlobals(parameters, useGlobals);
+            InitializeWithDefaults(parameters);
             if (fn != null)
             {
                 fn(parameters);
@@ -81,20 +74,30 @@ namespace Cerulean.Consul
             }
         }
 
-        void InitializeWithGlobals(Parameters parameters, HashSet<string> useGlobals)
+        void InitializeWithDefaults(Parameters parameters)
         {
             if (parameters == null) throw new ArgumentNullException("parameters");
 
-            if (useGlobals != null && useGlobals.Any())
+            HashSet<string> initializable = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            BindingFlags binding = BindingFlags.Instance | BindingFlags.Public;
+            MethodInfo[] methods = parameters.GetType().GetMethods(binding);
+            foreach (MethodInfo method in methods.Where(m => m.ReturnType == typeof(void)))
             {
-                IEnumerable<KeyValuePair<string, object>> overrides = _globals
-                    .Where(pair => useGlobals.Contains(pair.Key))
+                var attributes = method.GetCustomAttributes<InitializeFromDefaultAttribute>(true);
+                initializable.UnionWith(attributes.Select(a => a.ParameterName));
+            }
+
+            if (initializable.Any())
+            {
+                IEnumerable<KeyValuePair<string, object>> defaults = _defaults
+                    .Where(pair => initializable.Contains(pair.Key))
                     .ToArray();
-                if (overrides.Any())
+                if (defaults.Any())
                 {
-                    foreach (KeyValuePair<string, object> @override in overrides)
+                    foreach (KeyValuePair<string, object> @default in defaults)
                     {
-                        parameters.Add(@override.Key, @override.Value);
+                        parameters.Add(@default.Key, @default.Value);
                     }
                 }
             }

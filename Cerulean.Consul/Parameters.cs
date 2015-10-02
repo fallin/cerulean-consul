@@ -6,11 +6,11 @@ using System.Net;
 
 namespace Cerulean.Consul
 {
-    public class Parameters : IEnumerable<KeyValuePair<string, object>>
+    public abstract class Parameters : IEnumerable<KeyValuePair<string, object>>
     {
         readonly IDictionary<string, object> _parameters;
 
-        public Parameters()
+        protected Parameters()
         {
             _parameters = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);;
         }
@@ -29,17 +29,6 @@ namespace Cerulean.Consul
         {
             return _parameters.ContainsKey(name);
         }
-
-        //public void Clear()
-        //{
-        //    _parameters.Clear();
-        //}
-
-        //public object this[string name]
-        //{
-        //    get { return _parameters[name]; }
-        //    set { _parameters[name] = value; }
-        //}
 
         public string ToQueryString()
         {

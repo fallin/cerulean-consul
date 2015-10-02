@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Cerulean.Consul.WebExtensions;
@@ -8,12 +7,9 @@ namespace Cerulean.Consul.KeyValueStore
 {
     public class KeyValueOperations : ServiceOperations
     {
-        readonly HashSet<string> _useGlobals; 
-
-        internal KeyValueOperations(HttpClient client, GlobalParameters globals)
-            : base(client, globals)
+        internal KeyValueOperations(HttpClient client, DefaultParameters defaults)
+            : base(client, defaults)
         {
-            _useGlobals = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "dc", "token" };
         }
 
         public Task<KeyValueResponse<KeyValue[]>> GetAllAsync()
@@ -23,7 +19,7 @@ namespace Cerulean.Consul.KeyValueStore
 
         public async Task<KeyValueResponse<KeyValue[]>> GetAsync(string key, Action<KeyValueGetParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, _useGlobals);
+            var parameters = ConfigureParameters(config);
             string uri = ConstructUri(parameters, "v1/kv/{0}", key);
 
             HttpResponseMessage response = await Client.GetAsync(uri);
@@ -35,7 +31,7 @@ namespace Cerulean.Consul.KeyValueStore
         // NOTE: returns string or string[] when recurse is set
         public async Task<KeyValueResponse<dynamic>> GetRawAsync(string key, Action<KeyValueGetRawParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, _useGlobals);
+            var parameters = ConfigureParameters(config);
             string uri = ConstructUri(parameters, "v1/kv/{0}", key);
 
             HttpResponseMessage response = await Client.GetAsync(uri);
@@ -46,7 +42,7 @@ namespace Cerulean.Consul.KeyValueStore
 
         public async Task<KeyValueResponse<string[]>> GetKeysAsync(string key, Action<KeyValueGetKeysParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, _useGlobals);
+            var parameters = ConfigureParameters(config);
             string uri = ConstructUri(parameters, "v1/kv/{0}", key);
 
             HttpResponseMessage response = await Client.GetAsync(uri);
@@ -55,7 +51,7 @@ namespace Cerulean.Consul.KeyValueStore
             return reply;
         }
 
-        internal async Task<KeyValueResponse<dynamic>> GetDynamicAsync(string key, Action<Parameters> config = null)
+        internal async Task<KeyValueResponse<dynamic>> GetDynamicAsync(string key, Action<KeyValueGetParameters> config = null)
         {
             // The method signature changed. The dynamic 'query' parameter has been replaced by Action<Parameters>
             // because the Parameter class is flexible enough to allow any query parameters (by calling the Add(_)
@@ -64,7 +60,7 @@ namespace Cerulean.Consul.KeyValueStore
 
             if (key == null) throw new ArgumentNullException("key");
 
-            var parameters = ConfigureParameters(config, _useGlobals);
+            var parameters = ConfigureParameters(config);
             string uri = ConstructUri(parameters, "v1/kv/{0}", key);
 
             HttpResponseMessage response = await Client.GetAsync(uri);
@@ -77,7 +73,7 @@ namespace Cerulean.Consul.KeyValueStore
         {
             if (key == null) throw new ArgumentNullException("key");
 
-            var parameters = ConfigureParameters(config, _useGlobals);
+            var parameters = ConfigureParameters(config);
             string uri = ConstructUri(parameters, "v1/kv/{0}", key);
 
             HttpResponseMessage response = await Client.PutAsync(uri, new StringContent(value));
@@ -89,7 +85,7 @@ namespace Cerulean.Consul.KeyValueStore
         {
             if (key == null) throw new ArgumentNullException("key");
 
-            var parameters = ConfigureParameters(config, _useGlobals);
+            var parameters = ConfigureParameters(config);
             string uri = ConstructUri(parameters, "v1/kv/{0}", key);
 
             HttpResponseMessage response = await Client.DeleteAsync(uri);

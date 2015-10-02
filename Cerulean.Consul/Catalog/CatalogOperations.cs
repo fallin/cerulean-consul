@@ -8,8 +8,8 @@ namespace Cerulean.Consul.Catalog
 {
     public class CatalogOperations : ServiceOperations
     {
-        internal CatalogOperations(HttpClient client, GlobalParameters globals)
-            : base(client, globals)
+        internal CatalogOperations(HttpClient client, DefaultParameters defaults)
+            : base(client, defaults)
         {
         }
 

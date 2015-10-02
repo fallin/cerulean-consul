@@ -4,6 +4,7 @@ namespace Cerulean.Consul.KeyValueStore
 {
     public abstract class KeyValueParameters : Parameters
     {
+        [InitializeFromDefault("dc")]
         public void Datacenter(string dc)
         {
             if (!string.IsNullOrEmpty(dc))
@@ -12,6 +13,7 @@ namespace Cerulean.Consul.KeyValueStore
             }
         }
 
+        [InitializeFromDefault("token")]
         public void AclToken(Guid token)
         {
             Add("token", token.ToString("D"));
