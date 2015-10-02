@@ -48,18 +48,11 @@ namespace Cerulean.Consul
             return uri;
         }
 
-        protected T ConfigureParameters<T>(Action<T> fn, params string[] useGlobals) where T : Parameters, new()
-        {
-            HashSet<string> collection = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            collection.UnionWith(useGlobals);
-
-            return ConfigureParameters(fn, collection);
-        }
-
-        protected T ConfigureParameters<T>(Action<T> fn, HashSet<string> useGlobals) where T : Parameters, new()
+        protected T ConfigureParameters<T>(Action<T> fn) where T : Parameters, new()
         {
             T parameters = new T();
 
+            HashSet<string> useGlobals = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             InitializeWithGlobals(parameters, useGlobals);
             if (fn != null)
             {

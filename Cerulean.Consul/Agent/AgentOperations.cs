@@ -96,7 +96,7 @@ namespace Cerulean.Consul.Agent
 
         public async Task RegisterCheckAsync(CheckRegistrar check, Action<AgentRegisterCheckParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, "token");
+            var parameters = ConfigureParameters(config);
             string uri = ConstructUri(parameters, "v1/agent/check/register");
 
             HttpContent content = new StringContent(JsonConvert.SerializeObject(check, Formatting.None));
@@ -141,7 +141,7 @@ namespace Cerulean.Consul.Agent
 
         public async Task RegisterServiceAsync(ServiceRegistrar service, Action<RegisterServiceParameters> config = null)
         {
-            var parameters = ConfigureParameters(config, "token");
+            var parameters = ConfigureParameters(config);
             string uri = ConstructUri(parameters, "v1/agent/service/register");
 
             HttpContent content = new StringContent(JsonConvert.SerializeObject(service, Formatting.None));
