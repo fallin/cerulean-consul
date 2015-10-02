@@ -2,7 +2,7 @@ using System;
 
 namespace Cerulean.Consul
 {
-    public class GlobalParameters : Parameters
+    public class DefaultParameters : Parameters
     {
         public void AclToken(Guid token)
         {

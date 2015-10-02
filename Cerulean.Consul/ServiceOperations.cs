@@ -9,14 +9,14 @@ namespace Cerulean.Consul
     public abstract class ServiceOperations
     {
         readonly HttpClient _client;
-        readonly GlobalParameters _globals;
+        readonly DefaultParameters _defaults;
 
-        protected ServiceOperations(HttpClient client, GlobalParameters globals)
+        protected ServiceOperations(HttpClient client, DefaultParameters defaults)
         {
             if (client == null) throw new ArgumentNullException("client");
 
             _client = client;
-            _globals = globals ?? new GlobalParameters();
+            _defaults = defaults ?? new DefaultParameters();
         }
 
         protected HttpClient Client
@@ -53,7 +53,7 @@ namespace Cerulean.Consul
         {
             T parameters = new T();
 
-            InitializeWithGlobals(parameters);
+            InitializeWithDefaults(parameters);
             if (fn != null)
             {
                 fn(parameters);
@@ -74,7 +74,7 @@ namespace Cerulean.Consul
             }
         }
 
-        void InitializeWithGlobals(Parameters parameters)
+        void InitializeWithDefaults(Parameters parameters)
         {
             if (parameters == null) throw new ArgumentNullException("parameters");
 
@@ -84,13 +84,13 @@ namespace Cerulean.Consul
             MethodInfo[] methods = parameters.GetType().GetMethods(binding);
             foreach (MethodInfo method in methods.Where(m => m.ReturnType == typeof(void)))
             {
-                var attributes = method.GetCustomAttributes<InitializeFromGlobalAttribute>(true);
+                var attributes = method.GetCustomAttributes<InitializeFromDefaultAttribute>(true);
                 initializable.UnionWith(attributes.Select(a => a.ParameterName));
             }
 
             if (initializable.Any())
             {
-                IEnumerable<KeyValuePair<string, object>> defaults = _globals
+                IEnumerable<KeyValuePair<string, object>> defaults = _defaults
                     .Where(pair => initializable.Contains(pair.Key))
                     .ToArray();
                 if (defaults.Any())

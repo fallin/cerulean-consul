@@ -3,9 +3,9 @@ using System;
 namespace Cerulean.Consul
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    sealed class InitializeFromGlobalAttribute : Attribute
+    sealed class InitializeFromDefaultAttribute : Attribute
     {
-        public InitializeFromGlobalAttribute(string parameterName)
+        public InitializeFromDefaultAttribute(string parameterName)
         {
             ParameterName = parameterName;
         }

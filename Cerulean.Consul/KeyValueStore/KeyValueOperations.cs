@@ -7,8 +7,8 @@ namespace Cerulean.Consul.KeyValueStore
 {
     public class KeyValueOperations : ServiceOperations
     {
-        internal KeyValueOperations(HttpClient client, GlobalParameters globals)
-            : base(client, globals)
+        internal KeyValueOperations(HttpClient client, DefaultParameters defaults)
+            : base(client, defaults)
         {
         }
 

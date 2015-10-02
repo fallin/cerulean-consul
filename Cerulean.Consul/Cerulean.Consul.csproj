@@ -82,9 +82,9 @@
     <Compile Include="Catalog\ServiceTags.cs" />
     <Compile Include="ConsulClient.cs" />
     <Compile Include="ConsulResponse.cs" />
-    <Compile Include="GlobalParameters.cs" />
+    <Compile Include="DefaultParameters.cs" />
     <Compile Include="Catalog\CatalogOperations.cs" />
-    <Compile Include="InitializeFromGlobalAttribute.cs" />
+    <Compile Include="InitializeFromDefaultAttribute.cs" />
     <Compile Include="KeyValueStore\KeyValueDelParameters.cs" />
     <Compile Include="KeyValueStore\KeyValueGetKeysParameters.cs" />
     <Compile Include="KeyValueStore\KeyValueGetParameters.cs" />

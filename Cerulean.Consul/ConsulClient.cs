@@ -13,7 +13,7 @@ namespace Cerulean.Consul
         readonly Lazy<KeyValueOperations> _storage;
         readonly Lazy<CatalogOperations> _catalog;
         readonly Lazy<AgentOperations> _agent;
-        readonly GlobalParameters _globalParameters = new GlobalParameters();
+        readonly DefaultParameters _defaults = new DefaultParameters();
 
         public ConsulClient()
             : this(new Uri("http://localhost:8500/"))
@@ -25,14 +25,14 @@ namespace Cerulean.Consul
         {
             _client = new HttpClient {BaseAddress = address};
 
-            _storage = new Lazy<KeyValueOperations>(() => new KeyValueOperations(_client, _globalParameters));
-            _catalog = new Lazy<CatalogOperations>(() => new CatalogOperations(_client, _globalParameters));
-            _agent = new Lazy<AgentOperations>(() => new AgentOperations(_client, _globalParameters));
+            _storage = new Lazy<KeyValueOperations>(() => new KeyValueOperations(_client, _defaults));
+            _catalog = new Lazy<CatalogOperations>(() => new CatalogOperations(_client, _defaults));
+            _agent = new Lazy<AgentOperations>(() => new AgentOperations(_client, _defaults));
         }
 
-        public GlobalParameters Global
+        public DefaultParameters Default
         {
-            get { return _globalParameters; }
+            get { return _defaults; }
         }
 
         public KeyValueOperations KeyValue
