@@ -9,6 +9,7 @@ namespace Cerulean.Consul.KeyValueStore
             Add("keys");
         }
 
+        [InitializeFromGlobal("separator")]
         public void Separator(char separator)
         {
             Add("separator", separator);

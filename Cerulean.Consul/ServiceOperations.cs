@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 
 namespace Cerulean.Consul
 {
@@ -52,8 +53,7 @@ namespace Cerulean.Consul
         {
             T parameters = new T();
 
-            HashSet<string> useGlobals = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            InitializeWithGlobals(parameters, useGlobals);
+            InitializeWithGlobals(parameters);
             if (fn != null)
             {
                 fn(parameters);
@@ -74,20 +74,30 @@ namespace Cerulean.Consul
             }
         }
 
-        void InitializeWithGlobals(Parameters parameters, HashSet<string> useGlobals)
+        void InitializeWithGlobals(Parameters parameters)
         {
             if (parameters == null) throw new ArgumentNullException("parameters");
 
-            if (useGlobals != null && useGlobals.Any())
+            HashSet<string> initializable = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            BindingFlags binding = BindingFlags.Instance | BindingFlags.Public;
+            MethodInfo[] methods = parameters.GetType().GetMethods(binding);
+            foreach (MethodInfo method in methods.Where(m => m.ReturnType == typeof(void)))
             {
-                IEnumerable<KeyValuePair<string, object>> overrides = _globals
-                    .Where(pair => useGlobals.Contains(pair.Key))
+                var attributes = method.GetCustomAttributes<InitializeFromGlobalAttribute>(true);
+                initializable.UnionWith(attributes.Select(a => a.ParameterName));
+            }
+
+            if (initializable.Any())
+            {
+                IEnumerable<KeyValuePair<string, object>> defaults = _globals
+                    .Where(pair => initializable.Contains(pair.Key))
                     .ToArray();
-                if (overrides.Any())
+                if (defaults.Any())
                 {
-                    foreach (KeyValuePair<string, object> @override in overrides)
+                    foreach (KeyValuePair<string, object> @default in defaults)
                     {
-                        parameters.Add(@override.Key, @override.Value);
+                        parameters.Add(@default.Key, @default.Value);
                     }
                 }
             }
