@@ -1,4 +1,7 @@
+**Note: this repository is no longer actively maintained.**
+
 # cerulean-consul
+
 .NET client API for Consul (https://www.consul.io/)
 
 This library uses HttpClient and [Json.NET](http://www.newtonsoft.com/json) to provide a convenient (and hopefully) easy to use API to access Consul features. It currently only supports the Key-Value API, but that will be improved.
